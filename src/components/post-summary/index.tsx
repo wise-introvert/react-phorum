@@ -32,7 +32,7 @@ import {
   BiErrorAlt,
 } from "react-icons/bi";
 import { FiEye } from "react-icons/fi";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import he from "he";
 import remarkGfm from "remark-gfm";
@@ -265,7 +265,7 @@ export const PostCard: FC<PostCardProps> = ({
             e.stopPropagation();
             onUserClick();
           }}
-          href={`#`}
+          to={`#`}
           as={Link}
           mr={[1, 1, 2]}
           fontSize={["2xs", "xs"]}
@@ -285,7 +285,7 @@ export const PostCard: FC<PostCardProps> = ({
             e.stopPropagation();
             onThreadClick();
           }}
-          href={`#`}
+          to={`#`}
           as={Link}
           mr={[1, 1, 2]}
           fontSize={["2xs", "xs"]}
@@ -592,7 +592,7 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({
           _hover={{
             textDecoration: "underline",
           }}
-          href={`#`}
+          to={`#`}
           as={Link}
           mr={2}
           fontSize={"xs"}
@@ -608,7 +608,7 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({
           _hover={{
             textDecoration: "underline",
           }}
-          href={`#`}
+          to={`#`}
           as={Link}
           mr={2}
           fontSize={"xs"}
