@@ -4,7 +4,7 @@ import { VStack, Box } from "@chakra-ui/react";
 import { get } from "lodash";
 
 import { GetFeedQuery } from "./graphql";
-import { PostCard } from "..";
+import { PostCard } from "../post-summary";
 
 export const Feed: FC<{}> = (): ReactElement => {
   const { data, error, loading } = useQuery<{ posts: Interfaces.Post[] }>(
