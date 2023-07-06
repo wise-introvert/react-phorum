@@ -209,7 +209,7 @@ export const PostCard: FC<PostCardProps> = ({
       }}
       onClick={(e: MouseEvent<HTMLDivElement>): any => {
         e.stopPropagation();
-        if (!open) onPostClick();
+        if (!open && !isEmpty(onPostClick)) onPostClick();
         else setOpen(false);
       }}
       pos={"relative"}
