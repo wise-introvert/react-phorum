@@ -389,7 +389,7 @@ export const PostCard: FC<PostCardProps> = ({
             w={"full"}
             alt={"image"}
             src={
-              image ||
+              image ??
               "https://wildskiesresort.com/wp-content/uploads/woocommerce-placeholder-300x300@2x.png"
             }
           />
