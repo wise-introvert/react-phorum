@@ -7,7 +7,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Container, Text, Box } from "@chakra-ui/react";
 
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
