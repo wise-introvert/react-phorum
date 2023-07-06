@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Container, Text, Box } from "@chakra-ui/react";
 
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -37,6 +39,12 @@ const client: ApolloClient<{}> = new ApolloClient<{}>({
   uri: process.env.REACT_APP_GQL_URI || "http://localhost:4000",
   cache: new InMemoryCache(),
 });
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <h1>Hello</h1>,
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -45,7 +53,7 @@ root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <ChakraProvider theme={theme}>
-        <h1>Hello</h1>
+        <RouterProvider router={router} />
       </ChakraProvider>
     </ApolloProvider>
   </React.StrictMode>
