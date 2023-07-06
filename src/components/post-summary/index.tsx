@@ -1,8 +1,9 @@
-"use client";
-
-import { ReactElement, FC, MouseEvent, useState, MouseEvent } from "react";
+import { ReactElement, FC, MouseEvent, useState } from "react";
 import {
   Button,
+  UnorderedList,
+  OrderedList,
+  ListItem,
   Avatar,
   Text,
   Menu,
