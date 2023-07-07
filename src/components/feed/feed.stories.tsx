@@ -229,21 +229,45 @@ Default.parameters = {
   },
 };
 
-/*
 export const Loading: Story = {
-  args: {
-    loading: true,
-    ...Default.args,
+  parameters: {
+    ...Default.parameters,
+    apolloClient: {
+      mocks: [
+        {
+          delay: 109875098102958,
+          request: {
+            query: GetFeedQuery,
+          },
+          result: {
+            data: {
+              posts,
+            },
+          },
+        },
+      ],
+    },
   },
 };
 
-export const Error: Story = {
-  args: {
-    error: "Something went wrong!",
-    ...Default.args,
+export const ErrorState: Story = {
+  parameters: {
+    ...Default.parameters,
+    apolloClient: {
+      mocks: [
+        {
+          delay: 6000,
+          request: {
+            query: GetFeedQuery,
+          },
+          error: new Error("Something went wrong."),
+        },
+      ],
+    },
   },
 };
 
+/*
 export const NoData: Story = {
   args: {
     ...Default.args,
