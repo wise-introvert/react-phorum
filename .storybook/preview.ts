@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { MockedProvider } from "@apollo/client/testing";
+import "../src/index.css";
 
 import { theme } from "../src/utils";
 
