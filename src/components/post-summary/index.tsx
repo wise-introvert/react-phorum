@@ -544,7 +544,6 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({
   return (
     <Box
       whiteSpace={"normal"}
-      my={"6"}
       w={"full"}
       display={"grid"}
       gridTemplateRows={"38px 5fr 48px"}
