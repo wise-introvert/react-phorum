@@ -30,6 +30,7 @@ import {
   BiTrendingDown,
   BiDotsVerticalRounded,
   BiErrorAlt,
+  BiArrowToRight,
 } from "react-icons/bi";
 import { FiEye } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -184,11 +185,7 @@ export const PostCard: FC<PostCardProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const [expand, setExpand] = useState<boolean>(false);
 
-  if (loading) {
-    return <PostSkeleton loading={loading} />;
-  }
-
-  if (error || isEmpty(post)) {
+  if (error || (!loading && isEmpty(post))) {
     return <PostError />;
   }
 
@@ -200,21 +197,16 @@ export const PostCard: FC<PostCardProps> = ({
       display={"grid"}
       gridTemplateRows={"38px 5fr 48px"}
       borderRadius={"md"}
-      borderColor={"black"}
-      borderWidth={"thin"}
-      boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
+      border={"1px solid black"}
       overflow={"hidden"}
-      _hover={{
-        boxShadow: "0px 6px 8px rgba(0, 0, 0, 0.1)",
-      }}
-      onClick={(e: MouseEvent<HTMLDivElement>): any => {
-        e.stopPropagation();
-        if (!open && !isEmpty(onPostClick)) onPostClick();
-        else setOpen(false);
-      }}
+      height={"fit-content"}
       pos={"relative"}
+      onClick={(e: MouseEvent<HTMLDivElement>): void => {
+        e.stopPropagation();
+        setOpen((old: boolean): boolean => !old);
+      }}
     >
-      {loading && (
+      {loading ? (
         <Box
           h={"full"}
           w={"full"}
@@ -232,441 +224,424 @@ export const PostCard: FC<PostCardProps> = ({
         >
           <Spinner />
         </Box>
-      )}
-      <Box
-        position={"relative"}
-        borderBottom={"1px solid black"}
-        h={"full"}
-        w={"full"}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"flex-start"}
-        px={"4"}
-        py={"2"}
-      >
-        <Avatar
-          border={"1px solid black"}
-          h={"28px"}
-          maxW={"28px"}
-          mr={[1, 1, 2]}
-          name={get(post, "author.username")}
-          src={get(post, "author.avatar")}
-          onClick={(e: MouseEvent<any>): void => {
-            e.stopPropagation();
-            onUserClick();
-          }}
-        />
-        <Text
-          cursor={"pointer"}
-          _hover={{
-            textDecoration: "underline",
-          }}
-          onClick={(e: MouseEvent<any>): void => {
-            e.stopPropagation();
-            onUserClick();
-          }}
-          to={`#`}
-          as={Link}
-          mr={[1, 1, 2]}
-          fontSize={["2xs", "xs"]}
-          color={"blackAlpha.600"}
-        >
-          u-{get(post, "author.username")}
-        </Text>
-        <Text mr={[1, 1, 2]} fontSize={"xs"} color={"blackAlpha.700"}>
-          {BULLET}
-        </Text>
-        <Text
-          cursor={"pointer"}
-          _hover={{
-            textDecoration: "underline",
-          }}
-          onClick={(e: MouseEvent<any>): void => {
-            e.stopPropagation();
-            onThreadClick();
-          }}
-          to={`#`}
-          as={Link}
-          mr={[1, 1, 2]}
-          fontSize={["2xs", "xs"]}
-          color={"blackAlpha.600"}
-        >
-          Thread #{get(post, "_id", "").slice(0, 6)}
-        </Text>
-        <Text mr={[1, 1, 2]} fontSize={["2xs", "xs"]} color={"blackAlpha.700"}>
-          {BULLET}
-        </Text>
-        <Text mr={[1, 1, 2]} fontSize={["2xs", "xs"]} color={"blackAlpha.600"}>
-          {dayjs(get(post, "createdAt")).fromNow(true)}
-        </Text>
-        <Menu isOpen={open}>
-          <MenuButton
-            onClick={(e: MouseEvent<HTMLButtonElement>): void => {
-              e.stopPropagation();
-              setOpen((old: boolean): boolean => !old);
-            }}
-            aria-label={"options"}
-            variant={"ghost"}
-            position={"absolute"}
-            right={4}
-            as={IconButton}
-            icon={<Icon as={BiDotsVerticalRounded} />}
-            top={2}
-            color={"blackAlpha.900"}
-            bottom={0}
-            boxSize={[4, 5, 6]}
-          />
-          <MenuList
-            boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
-            border={"2px solid black"}
-            rounded={"md"}
-            fontSize={"sm"}
-            fontWeight={"semibold"}
-            p={0}
-            m={0}
-          >
-            <MenuItem
-              p={0}
-              m={0}
-              py={1}
-              px={1}
-              onClick={(e: MouseEvent<any>): void => {
-                e.stopPropagation();
-                setOpen(false);
-                onMenuItemClick("edit");
-              }}
-            >
-              Edit
-            </MenuItem>
-            <MenuDivider p={0} m={0} bg={"black"} />
-            <MenuItem
-              p={0}
-              m={0}
-              py={1}
-              px={1}
-              onClick={(e: MouseEvent<any>): void => {
-                e.stopPropagation();
-                setOpen(false);
-                onMenuItemClick("delete");
-              }}
-            >
-              Delete
-            </MenuItem>
-            <MenuDivider p={0} m={0} bg={"black"} />
-            <MenuItem
-              p={0}
-              m={0}
-              py={1}
-              px={1}
-              onClick={(e: MouseEvent<any>): void => {
-                e.stopPropagation();
-                setOpen(false);
-                onMenuItemClick("share");
-              }}
-            >
-              Share
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </Box>
-      <Box
-        borderBottom={"1px solid black"}
-        h={"full"}
-        w={"full"}
-        display={"grid"}
-        gridTemplateRows={"1fr"}
-        gridTemplateColumns={[
-          "100px 1px 7fr",
-          "125px 1px 7fr",
-          "150px 1px 7fr",
-        ]}
-      >
-        <Box p={"2"} h={"full"} w={"full"}>
-          <Image
-            objectFit={"contain"}
-            border={"1px solid black"}
-            rounded={"md"}
-            w={"full"}
-            alt={"image"}
-            src={
-              image ??
-              "https://wildskiesresort.com/wp-content/uploads/woocommerce-placeholder-300x300@2x.png"
-            }
-          />
-        </Box>
-        <Box bg={"black"} h={"full"} w={"1px"} />
-        {isEmpty(get(post, "content")) ? (
+      ) : (
+        <>
           <Box
+            position={"relative"}
+            borderBottom={"1px solid black"}
+            h={"full"}
+            w={"full"}
             display={"flex"}
             alignItems={"center"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-            h={"full"}
-            w={"full"}
+            justifyContent={"flex-start"}
+            px={"4"}
+            py={"2"}
           >
-            <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
-            <Text>Content unavailable!</Text>
-          </Box>
-        ) : (
-          <Box
-            p={"2"}
-            pb={4}
-            textAlign={"left"}
-            h={"full"}
-            w={"full"}
-            position={"relative"}
-          >
-            <ReactMarkdown
-              className={
-                expand ? "react-markdown-full" : "react-markdown-short"
-              }
-              components={renderers}
-              remarkPlugins={[remarkGfm, emoji]}
-              rehypePlugins={[rehypeRaw]}
-            >
-              {he.decode(
-                `${
-                  isEmpty(post!.title) ? "" : `### ${get(post, "title", "")}\n`
-                }${get(post, "content", "")}`
-              )}
-            </ReactMarkdown>
-            <Button
-              width={"full"}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"flex-end"}
-              size={"xs"}
-              variant={"link"}
-              textDecoration={"none"}
-              mt={expand ? -1 : 2}
-              onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+            <Avatar
+              border={"1px solid black"}
+              h={"28px"}
+              maxW={"28px"}
+              mr={[1, 1, 2]}
+              name={get(post, "author.username")}
+              src={get(post, "author.avatar")}
+              onClick={(e: MouseEvent<any>): void => {
                 e.stopPropagation();
-                setExpand((old: boolean): boolean => !old);
+                onUserClick();
+              }}
+            />
+            <Text
+              cursor={"pointer"}
+              onClick={(e: MouseEvent<any>): void => {
+                e.stopPropagation();
+                onUserClick();
+              }}
+              to={`#`}
+              as={Link}
+              mr={[1, 1, 2]}
+              fontSize={["2xs", "xs"]}
+              color={"blackAlpha.600"}
+              _hover={{
+                textDecoration: "underline",
               }}
             >
-              {expand ? "^^^ hide" : "...read more"}
-            </Button>
+              u-{get(post, "author.username")}
+            </Text>
+            <Text mr={[1, 1, 2]} fontSize={"xs"} color={"blackAlpha.700"}>
+              {BULLET}
+            </Text>
+            <Text
+              cursor={"pointer"}
+              onClick={(e: MouseEvent<any>): void => {
+                e.stopPropagation();
+                onThreadClick();
+              }}
+              to={`#`}
+              as={Link}
+              mr={[1, 1, 2]}
+              fontSize={["2xs", "xs"]}
+              color={"blackAlpha.600"}
+              _hover={{
+                textDecoration: "underline",
+              }}
+            >
+              Thread #{get(post, "_id", "").slice(0, 6)}
+            </Text>
+            <Text
+              mr={[1, 1, 2]}
+              fontSize={["2xs", "xs"]}
+              color={"blackAlpha.700"}
+            >
+              {BULLET}
+            </Text>
+            <Text
+              mr={[1, 1, 2]}
+              fontSize={["2xs", "xs"]}
+              color={"blackAlpha.600"}
+            >
+              {dayjs(get(post, "createdAt")).fromNow(true)}
+            </Text>
+            <Menu isOpen={open}>
+              <MenuButton
+                onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                  e.stopPropagation();
+                  setOpen((old: boolean): boolean => !old);
+                }}
+                aria-label={"options"}
+                variant={"ghost"}
+                _hover={{}}
+                _focus={{
+                  border: "1px solid black",
+                }}
+                _active={{
+                  border: "1px solid black",
+                }}
+                position={"absolute"}
+                right={4}
+                as={IconButton}
+                icon={<Icon as={BiDotsVerticalRounded} />}
+                top={2}
+                color={"blackAlpha.900"}
+                bottom={0}
+                boxSize={[4, 5, 6]}
+              />
+              <MenuList
+                boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
+                border={"2px solid black"}
+                rounded={"md"}
+                fontSize={"sm"}
+                fontWeight={"semibold"}
+                p={0}
+                m={0}
+              >
+                <MenuItem
+                  p={0}
+                  m={0}
+                  py={1}
+                  px={1}
+                  onClick={(e: MouseEvent<any>): void => {
+                    e.stopPropagation();
+                    setOpen(false);
+                    onMenuItemClick("edit");
+                  }}
+                >
+                  Edit
+                </MenuItem>
+                <MenuDivider p={0} m={0} bg={"black"} />
+                <MenuItem
+                  p={0}
+                  m={0}
+                  py={1}
+                  px={1}
+                  onClick={(e: MouseEvent<any>): void => {
+                    e.stopPropagation();
+                    setOpen(false);
+                    onMenuItemClick("delete");
+                  }}
+                >
+                  Delete
+                </MenuItem>
+                <MenuDivider p={0} m={0} bg={"black"} />
+                <MenuItem
+                  p={0}
+                  m={0}
+                  py={1}
+                  px={1}
+                  onClick={(e: MouseEvent<any>): void => {
+                    e.stopPropagation();
+                    setOpen(false);
+                    onMenuItemClick("share");
+                  }}
+                >
+                  Share
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </Box>
-        )}
-      </Box>
-      <StatGroup
-        as={Box}
-        h={"full"}
-        w={"full"}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"space-evenly"}
-        fontSize={["2xs", "xs"]}
-      >
-        <Box
-          h={"full"}
-          display={"grid"}
-          gridTemplateColumns={"48px auto"}
-          placeItems={"center"}
-        >
-          <Icon
-            color={trend > 0 ? "green" : "red"}
-            as={trend > 0 ? BiTrendingUp : BiTrendingDown}
-            boxSize={[4, 5, 6]}
-          />
-          <Stat
+          {isEmpty(image) ? (
+            <Box borderBottom={"1px solid black"} h={"full"} w={"full"}>
+              {isEmpty(get(post, "content")) ? (
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  flexDirection={"column"}
+                  h={"full"}
+                  w={"full"}
+                >
+                  <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
+                  <Text>Content unavailable!</Text>
+                </Box>
+              ) : (
+                <Box
+                  p={"2"}
+                  pb={4}
+                  textAlign={"left"}
+                  h={"full"}
+                  w={"full"}
+                  position={"relative"}
+                >
+                  <ReactMarkdown
+                    className={
+                      expand ? "react-markdown-full" : "react-markdown-short"
+                    }
+                    components={renderers}
+                    remarkPlugins={[remarkGfm, emoji]}
+                    rehypePlugins={[rehypeRaw]}
+                  >
+                    {he.decode(
+                      `${
+                        isEmpty(post!.title)
+                          ? ""
+                          : `### ${get(post, "title", "Dummy title")}\n`
+                      }${get(post, "content", "")}`
+                    )}
+                  </ReactMarkdown>
+                  {get(post, "content", "").length > 150 && (
+                    <Button
+                      width={"full"}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"flex-end"}
+                      bg={"transparent"}
+                      size={"xs"}
+                      variant={"link"}
+                      textDecoration={"none"}
+                      mt={expand ? -1 : 2}
+                      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                        e.stopPropagation();
+                        setExpand((old: boolean): boolean => !old);
+                      }}
+                    >
+                      {expand ? "^^^ hide" : "...read more"}
+                    </Button>
+                  )}
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Box
+              borderBottom={"1px solid black"}
+              h={"full"}
+              w={"full"}
+              {...(get(post, "genisis", false)
+                ? {
+                    display: "grid",
+                    gridTemplateRows: "1fr",
+                    gridTemplateColumns: [
+                      "100px 1px 7fr",
+                      "125px 1px 7fr",
+                      "150px 1px 7fr",
+                    ],
+                  }
+                : {})}
+            >
+              {get(post, "genisis", false) && (
+                <>
+                  <Box p={"2"} h={"full"} w={"full"}>
+                    <Image
+                      objectFit={"contain"}
+                      border={"1px solid black"}
+                      rounded={"md"}
+                      w={"full"}
+                      alt={"image"}
+                      src={
+                        image ??
+                        "https://wildskiesresort.com/wp-content/uploads/woocommerce-placeholder-300x300@2x.png"
+                      }
+                    />
+                  </Box>
+                  <Box bg={"black"} h={"full"} w={"1px"} />
+                </>
+              )}
+              {isEmpty(get(post, "content")) ? (
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  flexDirection={"column"}
+                  h={"full"}
+                  w={"full"}
+                >
+                  <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
+                  <Text>Content unavailable!</Text>
+                </Box>
+              ) : (
+                <Box
+                  p={"2"}
+                  pb={4}
+                  textAlign={"left"}
+                  h={"fit-content"}
+                  w={"full"}
+                  position={"relative"}
+                >
+                  {true ? (
+                    <Text
+                      cursor={"pointer"}
+                      onClick={(e: MouseEvent<HTMLSpanElement>): void => {
+                        e.stopPropagation();
+                        setExpand((old: boolean): boolean => !old);
+                      }}
+                      {...(expand && {
+                        noOfLines: 4,
+                      })}
+                    >
+                      <Text fontWeight={"bold"}>{get(post, "title", "")}</Text>
+                      {he.decode(get(post, "content", ""))}
+                    </Text>
+                  ) : (
+                    <ReactMarkdown
+                      className={
+                        expand ? "react-markdown-full" : "react-markdown-short"
+                      }
+                      components={renderers}
+                      remarkPlugins={[remarkGfm, emoji]}
+                      rehypePlugins={[rehypeRaw]}
+                    >
+                      {he.decode(
+                        `${
+                          isEmpty(post!.title)
+                            ? ""
+                            : `### ${get(post, "title", "Dummy title")}\n`
+                        }${get(post, "content", "")}`
+                      )}
+                    </ReactMarkdown>
+                  )}
+                </Box>
+              )}
+            </Box>
+          )}
+          <StatGroup
+            as={Box}
             h={"full"}
-            size={"xs"}
-            p={0}
-            m={0}
-            display={"grid"}
-            placeItems={"center"}
+            w={"full"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"space-evenly"}
+            fontSize={["2xs", "xs"]}
           >
-            <StatLabel>Votes</StatLabel>
-            <StatNumber>{formatNumber(votes)}</StatNumber>
-          </Stat>
-        </Box>
-        <Box
-          h={"full"}
-          w={"34%"}
-          display={"grid"}
-          placeItems={"center"}
-          borderRight={"1px solid black"}
-          borderLeft={"1px solid black"}
-        >
-          <Box
-            h={"full"}
-            display={"grid"}
-            gridTemplateColumns={"48px auto"}
-            placeItems={"center"}
-          >
-            <Icon boxSize={[4, 5, 6]} as={BiComment} />
-            <Stat
+            <Box w={"25%"} h={"full"} display={"grid"} placeItems={"center"}>
+              <Box
+                h={"full"}
+                display={"grid"}
+                gridTemplateColumns={"48px auto"}
+                placeItems={"center"}
+              >
+                <Icon
+                  color={trend > 0 ? "green" : "red"}
+                  as={trend > 0 ? BiTrendingUp : BiTrendingDown}
+                  boxSize={[4, 5, 6]}
+                />
+                <Stat
+                  h={"full"}
+                  size={"xs"}
+                  p={0}
+                  m={0}
+                  display={"grid"}
+                  placeItems={"center"}
+                >
+                  <StatLabel>Votes</StatLabel>
+                  <StatNumber>{formatNumber(votes)}</StatNumber>
+                </Stat>
+              </Box>
+            </Box>
+            <Box
+              h={"full"}
+              w={"25%"}
               display={"grid"}
               placeItems={"center"}
-              h={"full"}
-              size={"xs"}
-              p={0}
-              m={0}
+              borderRight={"1px solid black"}
+              borderLeft={"1px solid black"}
             >
-              <StatLabel>Replies</StatLabel>
-              <StatNumber>
-                {formatNumber(get(post, "children", []).length)}
-              </StatNumber>
-            </Stat>
-          </Box>
-        </Box>
-        <Box
-          h={"full"}
-          display={"grid"}
-          gridTemplateColumns={"48px auto"}
-          placeItems={"center"}
-        >
-          <Icon as={FiEye} boxSize={[4, 5, 6]} />
-          <Stat
-            display={"grid"}
-            placeItems={"center"}
-            h={"full"}
-            size={"xs"}
-            p={0}
-            m={0}
-          >
-            <StatLabel>Views</StatLabel>
-            <StatNumber>{formatNumber(views)}</StatNumber>
-          </Stat>
-        </Box>
-      </StatGroup>
-    </Box>
-  );
-};
-
-interface PostSkeletonProps {
-  loading: boolean;
-}
-export const PostSkeleton: React.FC<PostSkeletonProps> = ({
-  loading,
-}: PostSkeletonProps): ReactElement<PostSkeletonProps> => {
-  return (
-    <Box
-      whiteSpace={"normal"}
-      w={"full"}
-      display={"grid"}
-      gridTemplateRows={"38px 5fr 48px"}
-      borderRadius={"md"}
-      borderColor={"black"}
-      borderWidth={"thin"}
-      bg={"transparent"}
-      cursor={"pointer"}
-      pos={"relative"}
-    >
-      <Skeleton
-        isLoaded={!loading}
-        as={Box}
-        pos={"absolute"}
-        height={"full"}
-        width={"full"}
-        borderRadius={"md"}
-        top={1.5}
-        left={1.5}
-        startColor={"blackAlpha.50"}
-        endColor={"blackAlpha.300"}
-        fadeDuration={1}
-      />
-      <Box
-        position={"relative"}
-        borderBottom={"1px solid black"}
-        h={"full"}
-        w={"full"}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"flex-start"}
-        px={"4"}
-        py={"2"}
-      >
-        <Box
-          border={"1px solid black"}
-          h={"28px"}
-          w={"28px"}
-          mr={4}
-          rounded={"full"}
-          background={"transparent"}
-        />
-        <Text
-          cursor={"pointer"}
-          _hover={{
-            textDecoration: "underline",
-          }}
-          to={`#`}
-          as={Link}
-          mr={2}
-          fontSize={"xs"}
-          color={"blackAlpha.600"}
-        >
-          --------
-        </Text>
-        <Text mr={2} fontSize={"xs"} color={"blackAlpha.700"}>
-          --
-        </Text>
-        <Text
-          cursor={"pointer"}
-          _hover={{
-            textDecoration: "underline",
-          }}
-          to={`#`}
-          as={Link}
-          mr={2}
-          fontSize={"xs"}
-          color={"blackAlpha.600"}
-        >
-          ----------
-        </Text>
-        <Text mr={2} fontSize={"xs"} color={"blackAlpha.700"}>
-          --
-        </Text>
-        <Text mr={2} fontSize={"xs"} color={"blackAlpha.600"}>
-          ------ --
-        </Text>
-      </Box>
-      <Box
-        borderBottom={"1px solid black"}
-        h={"full"}
-        w={"full"}
-        display={"grid"}
-        gridTemplateRows={"1fr"}
-        gridTemplateColumns={[
-          "100px 1px 7fr",
-          "125px 1px 7fr",
-          "150px 1px 7fr",
-        ]}
-      >
-        <Box p={"2"} h={"full"} w={"full"}>
-          <Box width={150} height={150} />
-        </Box>
-        <Box bg={"black"} h={"full"} w={"1px"} />
-        <Box p={"2"} pb={4} textAlign={"left"} h={"full"} w={"full"}>
-          <Text fontSize={["sm", "md", "md"]} noOfLines={6}>
-            ---------- -------------- --- ------------------- --- ---- ----
-            ---------- --- --------------------------------- ---
-            ---------------- - -- ----- -- --------------------
-          </Text>
-        </Box>
-      </Box>
-      <Box
-        h={"full"}
-        w={"full"}
-        p={0}
-        m={0}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"space-evenly"}
-        fontSize={["xs", "sm", "sm", "md"]}
-        textAlign={"center"}
-      >
-        <Text fontSize={"sm"} fontWeight={"bold"}>
-          ---
-        </Text>
-        <Text fontSize={"sm"} fontWeight={"bold"}>
-          --
-        </Text>
-        <Text fontSize={"sm"} fontWeight={"bold"}>
-          ----
-        </Text>
-      </Box>
+              <Box
+                h={"full"}
+                display={"grid"}
+                gridTemplateColumns={"48px auto"}
+                placeItems={"center"}
+              >
+                <Icon boxSize={[4, 5, 6]} as={BiComment} />
+                <Stat
+                  display={"grid"}
+                  placeItems={"center"}
+                  h={"full"}
+                  size={"xs"}
+                  p={0}
+                  m={0}
+                >
+                  <StatLabel>Replies</StatLabel>
+                  <StatNumber>
+                    {formatNumber(get(post, "children", []).length)}
+                  </StatNumber>
+                </Stat>
+              </Box>
+            </Box>
+            <Box h={"full"} w={"25%"} display={"grid"} placeItems={"center"}>
+              <Box
+                h={"full"}
+                display={"grid"}
+                gridTemplateColumns={"48px auto"}
+                placeItems={"center"}
+              >
+                <Icon as={FiEye} boxSize={[4, 5, 6]} />
+                <Stat
+                  display={"grid"}
+                  placeItems={"center"}
+                  h={"full"}
+                  size={"xs"}
+                  p={0}
+                  m={0}
+                >
+                  <StatLabel>Views</StatLabel>
+                  <StatNumber>{formatNumber(views)}</StatNumber>
+                </Stat>
+              </Box>
+            </Box>
+            <Box
+              h={"full"}
+              w={"25%"}
+              cursor={"pointer"}
+              display={"grid"}
+              placeItems={"center"}
+              borderLeft={"1px solid black"}
+              _hover={{
+                bg: "blackAlpha.100",
+              }}
+            >
+              <Button
+                _hover={{}}
+                variant={"ghost"}
+                rightIcon={<Icon as={BiArrowToRight} />}
+                onClick={(e: MouseEvent<HTMLButtonElement>): any => {
+                  e.stopPropagation();
+                  if (onPostClick) onPostClick();
+                  else setOpen(false);
+                }}
+              >
+                view
+              </Button>
+            </Box>
+          </StatGroup>
+        </>
+      )}
     </Box>
   );
 };

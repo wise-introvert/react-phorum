@@ -192,8 +192,9 @@ export const Default: Story = {
 
 export const Loading: Story = {
   args: {
-    loading: true,
     ...Default.args,
+    loading: true,
+    post: {} as any,
   },
 };
 
@@ -232,12 +233,13 @@ export const NoImage: Story = {
   },
 };
 
-export const IsGenisis: Story = {
+export const IsNotGenisis: Story = {
   args: {
     ...Default.args,
     post: {
       ...(Default.args!.post as any),
-      genisis: true,
+      genisis: false,
+      title: "",
     },
   },
 };
