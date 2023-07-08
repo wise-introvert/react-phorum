@@ -13,7 +13,7 @@ code {
 }
 
 .react-markdown-short {
-  height: 120px;
+  max-height: 10ch;
   overflow: hidden;
 }
 
