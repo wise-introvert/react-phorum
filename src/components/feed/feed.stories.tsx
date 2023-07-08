@@ -205,6 +205,7 @@ const posts: Interfaces.Post[] = [
         },
       },
     ],
+    image: "https://wallpaperaccess.com/full/843950.jpg",
   },
 ] as any;
 

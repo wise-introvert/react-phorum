@@ -1,6 +1,6 @@
-import { FC, ReactElement, useEffect, MouseEvent, useState } from "react";
+import { FC, ReactElement, MouseEvent } from "react";
 import { useQuery } from "@apollo/client";
-import { VStack, Box, Text, Button, Icon } from "@chakra-ui/react";
+import { VStack, Box, Text, Button, Icon, Spinner } from "@chakra-ui/react";
 import { get, isEmpty } from "lodash";
 import { BiErrorAlt } from "react-icons/bi";
 import { FiRefreshCw } from "react-icons/fi";
@@ -15,41 +15,27 @@ export const Feed: FC<{}> = (): ReactElement => {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "cache-first",
   });
-  const [refetchFlag, setRefetchFlag] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!isEmpty(get(data, "posts", []))) {
-      setRefetchFlag(false);
-    } else {
-      setRefetchFlag(!!error);
-    }
-  }, [data]);
-
-  if (refetchFlag || error) {
+  if (error || loading) {
     return (
-      <Box
-        w={"full"}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
-        <Button
-          isLoading={loading}
-          disabled={loading}
-          border={"1px solid black"}
-          onClick={(e: MouseEvent<HTMLButtonElement>): void => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            refetch();
-          }}
-          bg={"white"}
-          boxShadow={"0 4px 6px rgba(0, 0, 0, 0.1)"}
-          aria-label={"refresh"}
-          leftIcon={<Icon as={FiRefreshCw} />}
-        >
-          Refresh
-        </Button>
+      <Box w={"full"} display={"grid"} placeItems={"center"}>
+        {error ? (
+          <Button
+            onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+              e.preventDefault();
+              e.stopPropagation();
+              refetch();
+            }}
+            leftIcon={<Icon as={FiRefreshCw} />}
+            size={"sm"}
+            border={"1px solid black"}
+            variant={"ghost"}
+          >
+            retry
+          </Button>
+        ) : (
+          <Spinner />
+        )}
       </Box>
     );
   }
@@ -57,10 +43,7 @@ export const Feed: FC<{}> = (): ReactElement => {
   return (
     <Box h={"full"} w={"full"}>
       <VStack py={3} spacing={2}>
-        {(loading && !error
-          ? ([{}, {}, {}] as any)
-          : get(data, "posts", [])
-        ).map(
+        {get(data, "posts", []).map(
           (post: Interfaces.Post): ReactElement => (
             <PostCard
               key={get(post, "_id")}
@@ -68,7 +51,11 @@ export const Feed: FC<{}> = (): ReactElement => {
               error={get(error, "message", undefined)}
               post={post}
               events={{} as any}
-              temp={{} as any}
+              temp={
+                {
+                  image: get(post, "image"),
+                } as any
+              }
             />
           )
         )}
