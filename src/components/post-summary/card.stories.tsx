@@ -239,6 +239,9 @@ export const IsNotGenisis: Story = {
     post: {
       ...(Default.args!.post as any),
       genisis: false,
+      thread: {
+        _id: "6as5df76a5s8f6a8s9d56",
+      },
       title: "",
     },
   },

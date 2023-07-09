@@ -1,6 +1,16 @@
-import { ReactElement, FC, MouseEvent, useState } from "react";
 import {
+  ReactElement,
+  FC,
+  MouseEvent,
+  useState,
+  ReactEventHandler,
+  FocusEventHandler,
+} from "react";
+import {
+  Slide,
   Button,
+  useDisclosure,
+  IconButton,
   UnorderedList,
   OrderedList,
   ListItem,
@@ -20,7 +30,6 @@ import {
   StatGroup,
   Skeleton,
   Image,
-  IconButton,
 } from "@chakra-ui/react";
 import { get, isEmpty } from "lodash";
 import dayjs from "dayjs";
@@ -31,6 +40,8 @@ import {
   BiDotsVerticalRounded,
   BiErrorAlt,
   BiArrowToRight,
+  BiChevronUpCircle,
+  BiChevronDownCircle,
 } from "react-icons/bi";
 import { FiEye } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -184,6 +195,8 @@ export const PostCard: FC<PostCardProps> = ({
 }: PostCardProps): ReactElement => {
   const [open, setOpen] = useState<boolean>(false);
   const [expand, setExpand] = useState<boolean>(false);
+  const [showIcon, setShowIcon] = useState<boolean>(false);
+  const { isOpen: hover, onOpen, onClose } = useDisclosure();
 
   if (error || (!loading && isEmpty(post))) {
     return <PostError />;
@@ -203,7 +216,7 @@ export const PostCard: FC<PostCardProps> = ({
       pos={"relative"}
       onClick={(e: MouseEvent<HTMLDivElement>): void => {
         e.stopPropagation();
-        setOpen((old: boolean): boolean => !old);
+        setOpen(false);
       }}
     >
       {loading ? (
@@ -284,7 +297,7 @@ export const PostCard: FC<PostCardProps> = ({
                 textDecoration: "underline",
               }}
             >
-              Thread #{get(post, "_id", "").slice(0, 6)}
+              #{get(post, "_id", "").slice(0, 6)}(Current)
             </Text>
             <Text
               mr={[1, 1, 2]}
@@ -377,7 +390,7 @@ export const PostCard: FC<PostCardProps> = ({
               </MenuList>
             </Menu>
           </Box>
-          {isEmpty(image) ? (
+          {/*isEmpty(image) || !get(post, "genisis") ? (
             <Box borderBottom={"1px solid black"} h={"full"} w={"full"}>
               {isEmpty(get(post, "content")) ? (
                 <Box
@@ -439,97 +452,133 @@ export const PostCard: FC<PostCardProps> = ({
               )}
             </Box>
           ) : (
-            <Box
-              borderBottom={"1px solid black"}
-              h={"full"}
-              w={"full"}
-              {...(get(post, "genisis", false)
-                ? {
-                    display: "grid",
-                    gridTemplateRows: "1fr",
-                    gridTemplateColumns: [
-                      "100px 1px 7fr",
-                      "125px 1px 7fr",
-                      "150px 1px 7fr",
-                    ],
-                  }
-                : {})}
-            >
-              {get(post, "genisis", false) && (
-                <>
-                  <Box p={"2"} h={"full"} w={"full"}>
-                    <Image
-                      objectFit={"contain"}
-                      border={"1px solid black"}
-                      rounded={"md"}
-                      w={"full"}
-                      alt={"image"}
-                      src={
-                        image ??
-                        "https://wildskiesresort.com/wp-content/uploads/woocommerce-placeholder-300x300@2x.png"
-                      }
-                    />
-                  </Box>
-                  <Box bg={"black"} h={"full"} w={"1px"} />
-                </>
-              )}
-              {isEmpty(get(post, "content")) ? (
-                <Box
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  flexDirection={"column"}
-                  h={"full"}
-                  w={"full"}
-                >
-                  <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
-                  <Text>Content unavailable!</Text>
+          )*/}
+          <Box
+            borderBottom={"1px solid black"}
+            h={"full"}
+            w={"full"}
+            {...(get(post, "genisis", false) && image
+              ? {
+                  display: "grid",
+                  gridTemplateRows: "1fr",
+                  gridTemplateColumns: [
+                    "100px 1px 7fr",
+                    "125px 1px 7fr",
+                    "150px 1px 7fr",
+                  ],
+                }
+              : {})}
+          >
+            {get(post, "genisis", false) && image && (
+              <>
+                <Box p={"2"} h={"full"} w={"full"}>
+                  <Image
+                    objectFit={"contain"}
+                    border={"1px solid black"}
+                    rounded={"md"}
+                    w={"full"}
+                    alt={"image"}
+                    src={
+                      image ??
+                      "https://wildskiesresort.com/wp-content/uploads/woocommerce-placeholder-300x300@2x.png"
+                    }
+                  />
                 </Box>
-              ) : (
-                <Box
-                  p={"2"}
-                  pb={4}
-                  textAlign={"left"}
-                  h={"fit-content"}
-                  w={"full"}
-                  position={"relative"}
+                <Box bg={"black"} h={"full"} w={"1px"} />
+              </>
+            )}
+            {isEmpty(get(post, "content")) ? (
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                flexDirection={"column"}
+                h={"full"}
+                w={"full"}
+              >
+                <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
+                <Text>Content unavailable!</Text>
+              </Box>
+            ) : (
+              <Box
+                onMouseLeave={(e: MouseEvent<HTMLDivElement>): void => {
+                  e.stopPropagation();
+                  setShowIcon(false);
+                }}
+                onMouseEnter={(e: MouseEvent<HTMLDivElement>): void => {
+                  e.stopPropagation();
+                  setShowIcon(true);
+                }}
+                p={"2"}
+                pb={4}
+                textAlign={"left"}
+                h={"fit-content"}
+                w={"full"}
+                position={"relative"}
+              >
+                <Text
+                  {...(!expand && {
+                    noOfLines: 4,
+                  })}
                 >
-                  {true ? (
-                    <Text
-                      cursor={"pointer"}
-                      onClick={(e: MouseEvent<HTMLSpanElement>): void => {
-                        e.stopPropagation();
-                        setExpand((old: boolean): boolean => !old);
-                      }}
-                      {...(expand && {
-                        noOfLines: 4,
-                      })}
-                    >
-                      <Text fontWeight={"bold"}>{get(post, "title", "")}</Text>
-                      {he.decode(get(post, "content", ""))}
-                    </Text>
-                  ) : (
-                    <ReactMarkdown
-                      className={
-                        expand ? "react-markdown-full" : "react-markdown-short"
-                      }
-                      components={renderers}
-                      remarkPlugins={[remarkGfm, emoji]}
-                      rehypePlugins={[rehypeRaw]}
-                    >
-                      {he.decode(
-                        `${
-                          isEmpty(post!.title)
-                            ? ""
-                            : `### ${get(post, "title", "Dummy title")}\n`
-                        }${get(post, "content", "")}`
-                      )}
-                    </ReactMarkdown>
-                  )}
-                </Box>
-              )}
-            </Box>
-          )}
+                  <Text
+                    fontWeight={"regular"}
+                    fontSize={"xs"}
+                    color={"blackAlpha.700"}
+                    textDecorationColor={"blackAlpha.800"}
+                    as={Link}
+                    _hover={{
+                      textDecoration: "underline",
+                    }}
+                    to={`/thread/${get(post, "_id", "").slice(0, 6)}`}
+                  >
+                    #
+                    {get(
+                      post,
+                      get(post, "genisis") ? "_id" : "thread._id",
+                      ""
+                    ).slice(0, 6)}
+                    {!get(post, "genisis") &&
+                      `...#${get(post, "_id").slice(0, 6)}`}{" "}
+                    {BULLET} last bumped{" "}
+                    {dayjs(
+                      get(
+                        post,
+                        "bump.last",
+                        new Date(new Date().getTime() - 10 * 60 * 60 * 1000)
+                      )
+                    ).fromNow()}
+                  </Text>
+                  <Text fontWeight={"bold"}>{get(post, "title", "")}</Text>
+                  {he.decode(get(post, "content", ""))}
+                </Text>
+                {showIcon && (
+                  <IconButton
+                    border={"1px solid black"}
+                    rounded={"full"}
+                    aria-label={"nothin"}
+                    bg={"whiteAlpha.200"}
+                    backdropFilter={"blur(2px)"}
+                    position={"absolute"}
+                    bottom={3}
+                    right={5}
+                    variant={"ghost"}
+                    disabled={true}
+                    onClick={(e: MouseEvent<HTMLButtonElement>): void => {
+                      e.stopPropagation();
+                      setExpand((old: boolean): boolean => !old);
+                    }}
+                    icon={
+                      <Icon
+                        boxSize={5}
+                        as={expand ? BiChevronUpCircle : BiChevronDownCircle}
+                      />
+                    }
+                  />
+                )}
+              </Box>
+            )}
+          </Box>
           <StatGroup
             as={Box}
             h={"full"}
@@ -539,7 +588,12 @@ export const PostCard: FC<PostCardProps> = ({
             justifyContent={"space-evenly"}
             fontSize={["2xs", "xs"]}
           >
-            <Box w={"25%"} h={"full"} display={"grid"} placeItems={"center"}>
+            <Box
+              w={get(post, "genisis") ? "25%" : "33%"}
+              h={"full"}
+              display={"grid"}
+              placeItems={"center"}
+            >
               <Box
                 h={"full"}
                 display={"grid"}
@@ -566,11 +620,15 @@ export const PostCard: FC<PostCardProps> = ({
             </Box>
             <Box
               h={"full"}
-              w={"25%"}
+              w={get(post, "genisis") ? "25%" : "34%"}
               display={"grid"}
               placeItems={"center"}
               borderRight={"1px solid black"}
               borderLeft={"1px solid black"}
+              _hover={{
+                bg: "blackAlpha.200",
+              }}
+              cursor={"pointer"}
             >
               <Box
                 h={"full"}
@@ -594,47 +652,56 @@ export const PostCard: FC<PostCardProps> = ({
                 </Stat>
               </Box>
             </Box>
-            <Box h={"full"} w={"25%"} display={"grid"} placeItems={"center"}>
-              <Box
-                h={"full"}
-                display={"grid"}
-                gridTemplateColumns={"48px auto"}
-                placeItems={"center"}
-              >
-                <Icon as={FiEye} boxSize={[4, 5, 6]} />
-                <Stat
-                  display={"grid"}
-                  placeItems={"center"}
+            {get(post, "genisis") && (
+              <Box h={"full"} w={"25%"} display={"grid"} placeItems={"center"}>
+                <Box
                   h={"full"}
-                  size={"xs"}
-                  p={0}
-                  m={0}
+                  display={"grid"}
+                  gridTemplateColumns={"48px auto"}
+                  placeItems={"center"}
                 >
-                  <StatLabel>Views</StatLabel>
-                  <StatNumber>{formatNumber(views)}</StatNumber>
-                </Stat>
+                  <Icon as={FiEye} boxSize={[4, 5, 6]} />
+                  <Stat
+                    display={"grid"}
+                    placeItems={"center"}
+                    h={"full"}
+                    size={"xs"}
+                    p={0}
+                    m={0}
+                  >
+                    <StatLabel>Views</StatLabel>
+                    <StatNumber>{formatNumber(views)}</StatNumber>
+                  </Stat>
+                </Box>
               </Box>
-            </Box>
+            )}
             <Box
               h={"full"}
-              w={"25%"}
+              w={get(post, "genisis") ? "25%" : "33%"}
               cursor={"pointer"}
               display={"grid"}
               placeItems={"center"}
-              borderLeft={"1px solid black"}
+              borderLeft={get(post, "genisis") ? "1px solid black" : ""}
+              bg={"#ffd700"}
               _hover={{
-                bg: "blackAlpha.100",
+                bg: "#ffc400",
+              }}
+              onClick={(e: MouseEvent<HTMLDivElement>): void => {
+                e.stopPropagation();
+                const func: Function = get(post, "genisis")
+                  ? onThreadClick
+                  : onPostClick;
+
+                func();
               }}
             >
               <Button
                 _hover={{}}
+                _active={{}}
+                _focus={{}}
                 variant={"ghost"}
                 rightIcon={<Icon as={BiArrowToRight} />}
-                onClick={(e: MouseEvent<HTMLButtonElement>): any => {
-                  e.stopPropagation();
-                  if (onPostClick) onPostClick();
-                  else setOpen(false);
-                }}
+                fontWeight={"semibold"}
               >
                 view
               </Button>
