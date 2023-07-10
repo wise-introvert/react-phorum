@@ -54,6 +54,9 @@ import emoji from "remark-emoji";
 import { formatNumber } from "../../utils";
 
 const BULLET: string = "•";
+
+// TODO: export this along with the actual component to
+// it's own file ( react-markdown.tsx, perhaps? )
 const renderers = {
   div: (props: any) => <Box {...props} />,
   p: (props: any) => (
