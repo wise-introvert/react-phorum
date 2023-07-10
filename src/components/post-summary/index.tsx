@@ -585,7 +585,16 @@ export const PostCard: FC<PostCardProps> = ({
                     </Text>
                   </Box>
                   <Text fontWeight={"bold"}>{get(post, "title", "")}</Text>
-                  {he.decode(get(post, "content", ""))}
+                  <ReactMarkdown
+                    className={
+                      expand ? "react-markdown-full" : "react-markdown-short"
+                    }
+                    components={renderers}
+                    remarkPlugins={[remarkGfm, emoji]}
+                    rehypePlugins={[rehypeRaw]}
+                  >
+                    {he.decode(get(post, "content", ""))}
+                  </ReactMarkdown>
                 </Text>
                 {showIcon && (
                   <IconButton
