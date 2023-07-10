@@ -12,7 +12,7 @@ export const formatNumber = (
   units: string[] = ["", "k", "M", "B", "T"]
 ): string => {
   if (!num || Number.isNaN(num)) {
-    return "•";
+    return "0"; // return "•";
   }
 
   if (!Number.isFinite(num)) {
