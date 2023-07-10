@@ -521,34 +521,69 @@ export const PostCard: FC<PostCardProps> = ({
                     noOfLines: 4,
                   })}
                 >
-                  <Text
-                    fontWeight={"regular"}
-                    fontSize={"xs"}
-                    color={"blackAlpha.700"}
-                    textDecorationColor={"blackAlpha.800"}
-                    as={Link}
-                    _hover={{
-                      textDecoration: "underline",
-                    }}
-                    to={`/thread/${get(post, "_id", "").slice(0, 6)}`}
+                  <Box
+                    display={"flex"}
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                    justifyContent={"start"}
                   >
-                    #
-                    {get(
-                      post,
-                      get(post, "genisis") ? "_id" : "thread._id",
-                      ""
-                    ).slice(0, 6)}
-                    {!get(post, "genisis") &&
-                      `...#${get(post, "_id").slice(0, 6)}`}{" "}
-                    {BULLET} last bumped{" "}
-                    {dayjs(
-                      get(
-                        post,
-                        "bump.last",
-                        new Date(new Date().getTime() - 10 * 60 * 60 * 1000)
-                      )
-                    ).fromNow()}
-                  </Text>
+                    <Text
+                      fontWeight={"regular"}
+                      fontSize={"xs"}
+                      color={"blackAlpha.700"}
+                      textDecorationColor={"blackAlpha.800"}
+                      as={Link}
+                      _hover={{
+                        textDecoration: "underline",
+                      }}
+                      to={`/thread/${get(post, "_id", "").slice(0, 6)}`}
+                    >
+                      {`#${get(post, "thread._id", "").slice(0, 6)}`}
+                    </Text>
+                    {!get(post, "genisis") && <Text>...</Text>}
+                    <Text
+                      fontWeight={"regular"}
+                      fontSize={"xs"}
+                      color={"blackAlpha.700"}
+                      textDecorationColor={"blackAlpha.800"}
+                      as={Link}
+                      _hover={{
+                        textDecoration: "underline",
+                      }}
+                      to={`/thread/${get(post, "_id", "").slice(0, 6)}`}
+                    >
+                      {`${
+                        !get(post, "genisis")
+                          ? `#${get(post, "_id").slice(0, 6)}`
+                          : ""
+                      }`}
+                      {/*
+                      # {get( post, get(post, "genisis") ? "_id" : "thread._id", "").slice(0, 6) + !get(post, "genisis") && `...#${get(post, "_id").slice(0, 6)}`}
+                      */}
+                    </Text>
+                    <Text
+                      fontWeight={"regular"}
+                      fontSize={"xs"}
+                      color={"blackAlpha.700"}
+                      mx={1}
+                    >
+                      {BULLET}
+                    </Text>
+                    <Text
+                      fontWeight={"regular"}
+                      fontSize={"xs"}
+                      color={"blackAlpha.700"}
+                    >
+                      last bumped{" "}
+                      {dayjs(
+                        get(
+                          post,
+                          "bump.last",
+                          new Date(new Date().getTime() - 10 * 60 * 60 * 1000)
+                        )
+                      ).fromNow()}
+                    </Text>
+                  </Box>
                   <Text fontWeight={"bold"}>{get(post, "title", "")}</Text>
                   {he.decode(get(post, "content", ""))}
                 </Text>
