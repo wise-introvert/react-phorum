@@ -1,4 +1,5 @@
 import {
+  useEffect,
   ReactElement,
   FC,
   MouseEvent,
@@ -9,7 +10,6 @@ import {
 import {
   Slide,
   Button,
-  useDisclosure,
   IconButton,
   UnorderedList,
   OrderedList,
@@ -199,7 +199,11 @@ export const PostCard: FC<PostCardProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const [expand, setExpand] = useState<boolean>(false);
   const [showIcon, setShowIcon] = useState<boolean>(false);
-  const { isOpen: hover, onOpen, onClose } = useDisclosure();
+  const [genisis, setGenisis] = useState<boolean>(false);
+
+  useEffect(() => {
+    setGenisis(get(post, "genisis", true));
+  }, [post]);
 
   if (error || (!loading && isEmpty(post))) {
     return <PostError />;
@@ -211,7 +215,7 @@ export const PostCard: FC<PostCardProps> = ({
       wordBreak={"break-word"}
       w={"full"}
       display={"grid"}
-      gridTemplateRows={"38px 5fr 48px"}
+      gridTemplateRows={`38px 5fr${genisis && " 48px"}`}
       borderRadius={"md"}
       border={"1px solid black"}
       overflow={"hidden"}
@@ -244,20 +248,23 @@ export const PostCard: FC<PostCardProps> = ({
         <>
           <Box
             position={"relative"}
-            borderBottom={"1px solid black"}
+            {...(genisis && {
+              borderBottom: "1px solid black",
+            })}
             h={"full"}
             w={"full"}
             display={"flex"}
             alignItems={"center"}
             justifyContent={"flex-start"}
             px={"4"}
-            py={"2"}
+            pt={"2"}
+            pb={genisis ? "2" : "0"}
           >
             <Avatar
               border={"1px solid black"}
               h={"28px"}
               maxW={"28px"}
-              mr={[1, 1, 2]}
+              mr={[2, 2, 3]}
               name={get(post, "author.username")}
               src={get(post, "author.avatar")}
               onClick={(e: MouseEvent<any>): void => {
@@ -282,26 +289,30 @@ export const PostCard: FC<PostCardProps> = ({
             >
               u-{get(post, "author.username")}
             </Text>
-            <Text mr={[1, 1, 2]} fontSize={"xs"} color={"blackAlpha.700"}>
-              {BULLET}
-            </Text>
-            <Text
-              cursor={"pointer"}
-              onClick={(e: MouseEvent<any>): void => {
-                e.stopPropagation();
-                onThreadClick();
-              }}
-              to={`#`}
-              as={Link}
-              mr={[1, 1, 2]}
-              fontSize={["2xs", "xs"]}
-              color={"blackAlpha.600"}
-              _hover={{
-                textDecoration: "underline",
-              }}
-            >
-              #{get(post, "_id", "").slice(0, 6)}(Current)
-            </Text>
+            {genisis && (
+              <>
+                <Text mr={[1, 1, 2]} fontSize={"xs"} color={"blackAlpha.700"}>
+                  {BULLET}
+                </Text>
+                <Text
+                  cursor={"pointer"}
+                  onClick={(e: MouseEvent<any>): void => {
+                    e.stopPropagation();
+                    onThreadClick();
+                  }}
+                  to={`#`}
+                  as={Link}
+                  mr={[1, 1, 2]}
+                  fontSize={["2xs", "xs"]}
+                  color={"blackAlpha.600"}
+                  _hover={{
+                    textDecoration: "underline",
+                  }}
+                >
+                  #{get(post, "_id", "").slice(0, 6)}(Current)
+                </Text>
+              </>
+            )}
             <Text
               mr={[1, 1, 2]}
               fontSize={["2xs", "xs"]}
@@ -393,7 +404,7 @@ export const PostCard: FC<PostCardProps> = ({
               </MenuList>
             </Menu>
           </Box>
-          {/*isEmpty(image) || !get(post, "genisis") ? (
+          {/*isEmpty(image) || !genisis ? (
             <Box borderBottom={"1px solid black"} h={"full"} w={"full"}>
               {isEmpty(get(post, "content")) ? (
                 <Box
@@ -457,10 +468,10 @@ export const PostCard: FC<PostCardProps> = ({
           ) : (
           )*/}
           <Box
-            borderBottom={"1px solid black"}
+            borderBottom={genisis ? "1px solid black" : ""}
             h={"full"}
             w={"full"}
-            {...(get(post, "genisis", false) && image
+            {...(genisis && image
               ? {
                   display: "grid",
                   gridTemplateRows: "1fr",
@@ -472,7 +483,7 @@ export const PostCard: FC<PostCardProps> = ({
                 }
               : {})}
           >
-            {get(post, "genisis", false) && image && (
+            {genisis && image && (
               <>
                 <Box p={"2"} h={"full"} w={"full"}>
                   <Image
@@ -543,7 +554,7 @@ export const PostCard: FC<PostCardProps> = ({
                     >
                       {`#${get(post, "thread._id", "").slice(0, 6)}`}
                     </Text>
-                    {!get(post, "genisis") && <Text>...</Text>}
+                    {!genisis && <Text>...</Text>}
                     <Text
                       fontWeight={"regular"}
                       fontSize={"xs"}
@@ -555,13 +566,9 @@ export const PostCard: FC<PostCardProps> = ({
                       }}
                       to={`/thread/${get(post, "_id", "").slice(0, 6)}`}
                     >
-                      {`${
-                        !get(post, "genisis")
-                          ? `#${get(post, "_id").slice(0, 6)}`
-                          : ""
-                      }`}
+                      {`${!genisis ? `#${get(post, "_id").slice(0, 6)}` : ""}`}
                       {/*
-                      # {get( post, get(post, "genisis") ? "_id" : "thread._id", "").slice(0, 6) + !get(post, "genisis") && `...#${get(post, "_id").slice(0, 6)}`}
+                      # {get( post, genisis ? "_id" : "thread._id", "").slice(0, 6) + !genisis && `...#${get(post, "_id").slice(0, 6)}`}
                       */}
                     </Text>
                     <Text
@@ -598,6 +605,37 @@ export const PostCard: FC<PostCardProps> = ({
                   >
                     {he.decode(get(post, "content", ""))}
                   </ReactMarkdown>
+                  {!genisis && (
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"flex-start"}
+                      flexDirection={"row"}
+                      mt={2}
+                      color={"blackAlpha.800"}
+                      fontSize={["sm", "sm", "md"]}
+                      onClick={(e: MouseEvent<HTMLDivElement>): void => {
+                        e.stopPropagation();
+                        if (onPostClick) onPostClick();
+                      }}
+                      _hover={{
+                        fontWeight: "bold",
+                      }}
+                      cursor={"pointer"}
+                    >
+                      <Icon
+                        pr={1}
+                        as={trend > 0 ? BiTrendingUp : BiTrendingDown}
+                        boxSize={[3, 4, 5]}
+                      />
+                      <Text pr={2}>{`${formatNumber(votes)}`}</Text>
+                      <Text pr={2}>{`${BULLET}`}</Text>
+                      <Icon as={BiComment} boxSize={[3, 4, 5]} pr={1} />
+                      <Text>
+                        {`${formatNumber(get(post, "children", []).length)}`}
+                      </Text>
+                    </Box>
+                  )}
                 </Text>
                 {showIcon && (
                   <IconButton
@@ -626,88 +664,65 @@ export const PostCard: FC<PostCardProps> = ({
               </Box>
             )}
           </Box>
-          <StatGroup
-            as={Box}
-            h={"full"}
-            w={"full"}
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"space-evenly"}
-            fontSize={["2xs", "xs"]}
-          >
-            <Box
-              w={get(post, "genisis") ? "25%" : "33%"}
+          {genisis && (
+            <StatGroup
+              as={Box}
               h={"full"}
-              display={"grid"}
-              placeItems={"center"}
+              w={"full"}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"space-evenly"}
+              fontSize={["2xs", "xs"]}
             >
               <Box
+                w={genisis ? "25%" : "33%"}
                 h={"full"}
                 display={"grid"}
-                gridTemplateColumns={"48px auto"}
                 placeItems={"center"}
               >
-                <Icon
-                  color={trend > 0 ? "green" : "red"}
-                  as={trend > 0 ? BiTrendingUp : BiTrendingDown}
-                  boxSize={[4, 5, 6]}
-                />
-                <Stat
-                  h={"full"}
-                  size={"xs"}
-                  p={0}
-                  m={0}
-                  display={"grid"}
-                  placeItems={"center"}
-                >
-                  <StatLabel>Votes</StatLabel>
-                  <StatNumber>{formatNumber(votes)}</StatNumber>
-                </Stat>
-              </Box>
-            </Box>
-            <Box
-              h={"full"}
-              w={get(post, "genisis") ? "25%" : "34%"}
-              display={"grid"}
-              placeItems={"center"}
-              borderRight={"1px solid black"}
-              borderLeft={"1px solid black"}
-              _hover={{
-                bg: "blackAlpha.200",
-              }}
-              cursor={"pointer"}
-            >
-              <Box
-                h={"full"}
-                display={"grid"}
-                gridTemplateColumns={"48px auto"}
-                placeItems={"center"}
-              >
-                <Icon boxSize={[4, 5, 6]} as={BiComment} />
-                <Stat
-                  display={"grid"}
-                  placeItems={"center"}
-                  h={"full"}
-                  size={"xs"}
-                  p={0}
-                  m={0}
-                >
-                  <StatLabel>Replies</StatLabel>
-                  <StatNumber>
-                    {formatNumber(get(post, "children", []).length)}
-                  </StatNumber>
-                </Stat>
-              </Box>
-            </Box>
-            {get(post, "genisis") && (
-              <Box h={"full"} w={"25%"} display={"grid"} placeItems={"center"}>
                 <Box
                   h={"full"}
                   display={"grid"}
                   gridTemplateColumns={"48px auto"}
                   placeItems={"center"}
                 >
-                  <Icon as={FiEye} boxSize={[4, 5, 6]} />
+                  <Icon
+                    color={trend > 0 ? "green" : "red"}
+                    as={trend > 0 ? BiTrendingUp : BiTrendingDown}
+                    boxSize={[4, 5, 6]}
+                  />
+                  <Stat
+                    h={"full"}
+                    size={"xs"}
+                    p={0}
+                    m={0}
+                    display={"grid"}
+                    placeItems={"center"}
+                  >
+                    <StatLabel>Votes</StatLabel>
+                    <StatNumber>{formatNumber(votes)}</StatNumber>
+                  </Stat>
+                </Box>
+              </Box>
+              <Box
+                h={"full"}
+                w={genisis ? "25%" : "34%"}
+                display={"grid"}
+                placeItems={"center"}
+                borderRight={"1px solid black"}
+                borderLeft={"1px solid black"}
+                _hover={{
+                  bg: "blackAlpha.200",
+                }}
+                cursor={"pointer"}
+              >
+                <Box
+                  h={"full"}
+                  display={"grid"}
+                  gridTemplateColumns={"48px auto"}
+                  placeItems={"center"}
+                >
+                  <Icon boxSize={[4, 5, 6]} as={BiComment} />
                   <Stat
                     display={"grid"}
                     placeItems={"center"}
@@ -716,44 +731,72 @@ export const PostCard: FC<PostCardProps> = ({
                     p={0}
                     m={0}
                   >
-                    <StatLabel>Views</StatLabel>
-                    <StatNumber>{formatNumber(views)}</StatNumber>
+                    <StatLabel>Replies</StatLabel>
+                    <StatNumber>
+                      {formatNumber(get(post, "children", []).length)}
+                    </StatNumber>
                   </Stat>
                 </Box>
               </Box>
-            )}
-            <Box
-              h={"full"}
-              w={get(post, "genisis") ? "25%" : "33%"}
-              cursor={"pointer"}
-              display={"grid"}
-              placeItems={"center"}
-              borderLeft={get(post, "genisis") ? "1px solid black" : ""}
-              bg={"#ffd700"}
-              _hover={{
-                bg: "#ffc400",
-              }}
-              onClick={(e: MouseEvent<HTMLDivElement>): void => {
-                e.stopPropagation();
-                const func: Function = get(post, "genisis")
-                  ? onThreadClick
-                  : onPostClick;
+              {genisis && (
+                <Box
+                  h={"full"}
+                  w={"25%"}
+                  display={"grid"}
+                  placeItems={"center"}
+                >
+                  <Box
+                    h={"full"}
+                    display={"grid"}
+                    gridTemplateColumns={"48px auto"}
+                    placeItems={"center"}
+                  >
+                    <Icon as={FiEye} boxSize={[4, 5, 6]} />
+                    <Stat
+                      display={"grid"}
+                      placeItems={"center"}
+                      h={"full"}
+                      size={"xs"}
+                      p={0}
+                      m={0}
+                    >
+                      <StatLabel>Views</StatLabel>
+                      <StatNumber>{formatNumber(views)}</StatNumber>
+                    </Stat>
+                  </Box>
+                </Box>
+              )}
+              <Box
+                h={"full"}
+                w={genisis ? "25%" : "33%"}
+                cursor={"pointer"}
+                display={"grid"}
+                placeItems={"center"}
+                borderLeft={genisis ? "1px solid black" : ""}
+                bg={"#ffd700"}
+                _hover={{
+                  bg: "#ffc400",
+                }}
+                onClick={(e: MouseEvent<HTMLDivElement>): void => {
+                  e.stopPropagation();
+                  const func: Function = genisis ? onThreadClick : onPostClick;
 
-                func();
-              }}
-            >
-              <Button
-                _hover={{}}
-                _active={{}}
-                _focus={{}}
-                variant={"ghost"}
-                rightIcon={<Icon as={BiArrowToRight} />}
-                fontWeight={"semibold"}
+                  func();
+                }}
               >
-                view
-              </Button>
-            </Box>
-          </StatGroup>
+                <Button
+                  _hover={{}}
+                  _active={{}}
+                  _focus={{}}
+                  variant={"ghost"}
+                  rightIcon={<Icon as={BiArrowToRight} />}
+                  fontWeight={"semibold"}
+                >
+                  view
+                </Button>
+              </Box>
+            </StatGroup>
+          )}
         </>
       )}
     </Box>
