@@ -1,4 +1,9 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+
+const config: ThemeConfig = {
+  initialColorMode: "dark",
+  useSystemColorMode: false,
+};
 
 export const theme = extendTheme({
   fonts: {
@@ -6,4 +11,12 @@ export const theme = extendTheme({
     body: "Source Code Pro",
     mono: "Source Code Pro",
   },
+  colors: {
+    primary: "#FFBE0B",
+    white: "#fafbfb",
+    black: "#010001",
+    darkgray: "#171717",
+    lightgray: "#667581",
+  },
+  config,
 });
