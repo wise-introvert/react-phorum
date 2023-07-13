@@ -1,12 +1,13 @@
 import { FC, ReactElement, MouseEvent } from "react";
 import { useQuery } from "@apollo/client";
-import { VStack, Box, Text, Button, Icon, Spinner } from "@chakra-ui/react";
+import { VStack, Box, Text, Icon, Spinner, useTheme } from "@chakra-ui/react";
 import { get, isEmpty } from "lodash";
 import { BiErrorAlt } from "react-icons/bi";
 import { FiRefreshCw } from "react-icons/fi";
 
 import { GetFeedQuery } from "./graphql";
 import { PostCard } from "../post-summary";
+import { Button } from "../button";
 
 export const Feed: FC<{}> = (): ReactElement => {
   const { data, error, loading, refetch } = useQuery<{
@@ -15,10 +16,11 @@ export const Feed: FC<{}> = (): ReactElement => {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "cache-first",
   });
+  const theme = useTheme();
 
   if (error || loading) {
     return (
-      <Box w={"full"} display={"grid"} placeItems={"center"}>
+      <Box h={"full"} w={"full"} display={"grid"} placeItems={"center"}>
         {error ? (
           <Button
             onClick={(e: MouseEvent<HTMLButtonElement>): void => {
@@ -28,7 +30,7 @@ export const Feed: FC<{}> = (): ReactElement => {
             }}
             leftIcon={<Icon as={FiRefreshCw} />}
             size={"sm"}
-            border={"1px solid black"}
+            border={"2px solid black"}
             variant={"ghost"}
           >
             retry

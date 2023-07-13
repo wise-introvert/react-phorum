@@ -1,6 +1,7 @@
 import { useEffect, ReactElement, FC, useState, MouseEvent } from "react";
 import {
-  Button,
+  useTheme,
+  useColorModeValue,
   IconButton,
   UnorderedList,
   OrderedList,
@@ -42,6 +43,7 @@ import rehypeRaw from "rehype-raw";
 import emoji from "remark-emoji";
 
 import { formatNumber } from "../../utils";
+import { Button } from "..";
 
 const BULLET: string = "•";
 
@@ -190,6 +192,11 @@ export const PostCard: FC<PostCardProps> = ({
   const [expand, setExpand] = useState<boolean>(false);
   const [showIcon, setShowIcon] = useState<boolean>(false);
   const [genisis, setGenisis] = useState<boolean>(false);
+  const theme: Interfaces.Theme = useTheme<Interfaces.Theme>();
+  const bg: string = useColorModeValue(
+    theme.colors.white,
+    theme.colors.darkgray
+  );
 
   useEffect(() => {
     setGenisis(get(post, "genisis", true));
@@ -207,10 +214,11 @@ export const PostCard: FC<PostCardProps> = ({
       display={"grid"}
       gridTemplateRows={`38px 5fr${genisis && " 48px"}`}
       borderRadius={"md"}
-      border={"1px solid black"}
+      border={"2px solid black"}
       overflow={"hidden"}
       height={"fit-content"}
       pos={"relative"}
+      bg={bg}
       onClick={(e: MouseEvent<HTMLDivElement>): void => {
         e.stopPropagation();
         setOpen(false);
@@ -239,7 +247,7 @@ export const PostCard: FC<PostCardProps> = ({
           <Box
             position={"relative"}
             {...(genisis && {
-              borderBottom: "1px solid black",
+              borderBottom: "2px solid black",
             })}
             h={"full"}
             w={"full"}
@@ -251,7 +259,7 @@ export const PostCard: FC<PostCardProps> = ({
             pb={genisis ? "2" : "0"}
           >
             <Avatar
-              border={"1px solid black"}
+              border={"2px solid black"}
               h={"28px"}
               maxW={"28px"}
               mr={[2, 2, 3]}
@@ -272,7 +280,7 @@ export const PostCard: FC<PostCardProps> = ({
               as={Link}
               mr={[1, 1, 2]}
               fontSize={["2xs", "xs"]}
-              color={"blackAlpha.600"}
+              color={theme.colors.lightgray}
               _hover={{
                 textDecoration: "underline",
               }}
@@ -281,7 +289,11 @@ export const PostCard: FC<PostCardProps> = ({
             </Text>
             {genisis && (
               <>
-                <Text mr={[1, 1, 2]} fontSize={"xs"} color={"blackAlpha.700"}>
+                <Text
+                  mr={[1, 1, 2]}
+                  fontSize={"xs"}
+                  color={theme.colors.lightgray}
+                >
                   {BULLET}
                 </Text>
                 <Text
@@ -294,7 +306,7 @@ export const PostCard: FC<PostCardProps> = ({
                   as={Link}
                   mr={[1, 1, 2]}
                   fontSize={["2xs", "xs"]}
-                  color={"blackAlpha.600"}
+                  color={theme.colors.lightgray}
                   _hover={{
                     textDecoration: "underline",
                   }}
@@ -306,14 +318,14 @@ export const PostCard: FC<PostCardProps> = ({
             <Text
               mr={[1, 1, 2]}
               fontSize={["2xs", "xs"]}
-              color={"blackAlpha.700"}
+              color={theme.colors.lightgray}
             >
               {BULLET}
             </Text>
             <Text
               mr={[1, 1, 2]}
               fontSize={["2xs", "xs"]}
-              color={"blackAlpha.600"}
+              color={theme.colors.lightgray}
             >
               {dayjs(get(post, "createdAt")).fromNow(true)}
             </Text>
@@ -327,17 +339,17 @@ export const PostCard: FC<PostCardProps> = ({
                 variant={"ghost"}
                 _hover={{}}
                 _focus={{
-                  border: "1px solid black",
+                  border: "2px solid black",
                 }}
                 _active={{
-                  border: "1px solid black",
+                  border: "2px solid black",
                 }}
                 position={"absolute"}
                 right={4}
                 as={IconButton}
                 icon={<Icon as={BiDotsVerticalRounded} />}
                 top={2}
-                color={"blackAlpha.900"}
+                color={theme.colors.lightgray}
                 bottom={0}
                 boxSize={[4, 5, 6]}
               />
@@ -395,7 +407,7 @@ export const PostCard: FC<PostCardProps> = ({
             </Menu>
           </Box>
           {/*isEmpty(image) || !genisis ? (
-            <Box borderBottom={"1px solid black"} h={"full"} w={"full"}>
+            <Box borderBottom={"2px solid black"} h={"full"} w={"full"}>
               {isEmpty(get(post, "content")) ? (
                 <Box
                   display={"flex"}
@@ -458,7 +470,7 @@ export const PostCard: FC<PostCardProps> = ({
           ) : (
           )*/}
           <Box
-            borderBottom={genisis ? "1px solid black" : ""}
+            borderBottom={genisis ? "2px solid black" : ""}
             h={"full"}
             w={"full"}
             {...(genisis && image
@@ -478,7 +490,7 @@ export const PostCard: FC<PostCardProps> = ({
                 <Box p={"2"} h={"full"} w={"full"}>
                   <Image
                     objectFit={"contain"}
-                    border={"1px solid black"}
+                    border={"2px solid black"}
                     rounded={"md"}
                     w={"full"}
                     alt={"image"}
@@ -488,7 +500,7 @@ export const PostCard: FC<PostCardProps> = ({
                     }
                   />
                 </Box>
-                <Box bg={"black"} h={"full"} w={"1px"} />
+                <Box bg={"black"} h={"full"} w={"2px"} />
               </>
             )}
             {isEmpty(get(post, "content")) ? (
@@ -501,7 +513,11 @@ export const PostCard: FC<PostCardProps> = ({
                 w={"full"}
                 py={"6"}
               >
-                <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
+                <Icon
+                  as={BiErrorAlt}
+                  boxSize={10}
+                  color={theme.colors.lightgray}
+                />
                 <Text>Content unavailable!</Text>
               </Box>
             ) : (
@@ -535,7 +551,7 @@ export const PostCard: FC<PostCardProps> = ({
                     <Text
                       fontWeight={"regular"}
                       fontSize={"xs"}
-                      color={"blackAlpha.700"}
+                      color={theme.colors.lightgray}
                       textDecorationColor={"blackAlpha.800"}
                       as={Link}
                       _hover={{
@@ -549,7 +565,7 @@ export const PostCard: FC<PostCardProps> = ({
                     <Text
                       fontWeight={"regular"}
                       fontSize={"xs"}
-                      color={"blackAlpha.700"}
+                      color={theme.colors.lightgray}
                       textDecorationColor={"blackAlpha.800"}
                       as={Link}
                       _hover={{
@@ -565,7 +581,7 @@ export const PostCard: FC<PostCardProps> = ({
                     <Text
                       fontWeight={"regular"}
                       fontSize={"xs"}
-                      color={"blackAlpha.700"}
+                      color={theme.colors.lightgray}
                       mx={1}
                     >
                       {BULLET}
@@ -573,7 +589,7 @@ export const PostCard: FC<PostCardProps> = ({
                     <Text
                       fontWeight={"regular"}
                       fontSize={"xs"}
-                      color={"blackAlpha.700"}
+                      color={theme.colors.lightgray}
                     >
                       last bumped{" "}
                       {dayjs(
@@ -603,7 +619,7 @@ export const PostCard: FC<PostCardProps> = ({
                       justifyContent={"flex-start"}
                       flexDirection={"row"}
                       mt={2}
-                      color={"blackAlpha.800"}
+                      color={theme.colors.lightgray}
                       fontSize={["sm", "sm", "md"]}
                       onClick={(e: MouseEvent<HTMLDivElement>): void => {
                         e.stopPropagation();
@@ -630,7 +646,7 @@ export const PostCard: FC<PostCardProps> = ({
                 </Text>
                 {showIcon && (
                   <IconButton
-                    border={"1px solid black"}
+                    border={"2px solid black"}
                     rounded={"full"}
                     aria-label={"nothin"}
                     bg={"whiteAlpha.200"}
@@ -700,8 +716,8 @@ export const PostCard: FC<PostCardProps> = ({
                 w={genisis ? "25%" : "34%"}
                 display={"grid"}
                 placeItems={"center"}
-                borderRight={"1px solid black"}
-                borderLeft={"1px solid black"}
+                borderRight={"2px solid black"}
+                borderLeft={"2px solid black"}
                 _hover={{
                   bg: "blackAlpha.200",
                 }}
@@ -757,35 +773,24 @@ export const PostCard: FC<PostCardProps> = ({
                   </Box>
                 </Box>
               )}
-              <Box
+              <Button
                 h={"full"}
                 w={genisis ? "25%" : "33%"}
                 cursor={"pointer"}
-                display={"grid"}
-                placeItems={"center"}
-                borderLeft={genisis ? "1px solid black" : ""}
-                bg={"#ffd700"}
-                _hover={{
-                  bg: "#ffc400",
-                }}
+                borderLeft={genisis ? "2px solid black" : ""}
                 onClick={(e: MouseEvent<HTMLDivElement>): void => {
                   e.stopPropagation();
                   const func: Function = genisis ? onThreadClick : onPostClick;
 
                   func();
                 }}
+                variant={"ghost"}
+                rightIcon={<Icon as={BiArrowToRight} />}
+                fontWeight={"semibold"}
+                rounded={"none"}
               >
-                <Button
-                  _hover={{}}
-                  _active={{}}
-                  _focus={{}}
-                  variant={"ghost"}
-                  rightIcon={<Icon as={BiArrowToRight} />}
-                  fontWeight={"semibold"}
-                >
-                  view
-                </Button>
-              </Box>
+                view
+              </Button>
             </StatGroup>
           )}
         </>
@@ -795,6 +800,8 @@ export const PostCard: FC<PostCardProps> = ({
 };
 
 export const PostError: FC = (): ReactElement => {
+  const theme = useTheme<Interfaces.Theme>();
+
   return (
     <Box
       w={"full"}
@@ -808,7 +815,7 @@ export const PostError: FC = (): ReactElement => {
       borderWidth={"thin"}
       shadow={"md"}
     >
-      <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
+      <Icon as={BiErrorAlt} boxSize={10} color={theme.colors.lightgray} />
     </Box>
   );
 };
