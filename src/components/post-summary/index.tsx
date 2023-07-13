@@ -1,14 +1,5 @@
+import { useEffect, ReactElement, FC, useState, MouseEvent } from "react";
 import {
-  useEffect,
-  ReactElement,
-  FC,
-  MouseEvent,
-  useState,
-  ReactEventHandler,
-  FocusEventHandler,
-} from "react";
-import {
-  Slide,
   Button,
   IconButton,
   UnorderedList,
@@ -28,7 +19,6 @@ import {
   StatLabel,
   StatNumber,
   StatGroup,
-  Skeleton,
   Image,
 } from "@chakra-ui/react";
 import { get, isEmpty } from "lodash";
@@ -509,6 +499,7 @@ export const PostCard: FC<PostCardProps> = ({
                 flexDirection={"column"}
                 h={"full"}
                 w={"full"}
+                py={"6"}
               >
                 <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
                 <Text>Content unavailable!</Text>
