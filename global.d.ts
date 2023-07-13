@@ -61,6 +61,13 @@ declare global {
 }
 
 declare namespace Interfaces {
+  export interface Theme {
+    colors: Record<
+      "primary" | "black" | "white" | "darkgray" | "lightgray",
+      string
+    >;
+  }
+
   export interface Thread {
     _id: string;
     author: User;
