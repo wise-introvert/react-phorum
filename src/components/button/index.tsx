@@ -15,13 +15,16 @@ export const Button: FC<ButtonProps> = ({
   return (
     <ChakraButton
       fontWeight={"semibold"}
-      bg={useColorModeValue(theme.colors.black, theme.colors.darkgray)}
-      border={useColorModeValue(theme.colors.black, "none")}
+      // bg={useColorModeValue(theme.colors.black, theme.colors.darkgray)}
+      // border={useColorModeValue(theme.colors.black, "none")}
       borderRadius={"5px"}
-      color={theme.colors.white}
+      border={`2px solid ${theme.colors.primary}`}
+      color={theme.colors.primary}
+      // color={theme.colors.white}
       _hover={{
         bg: theme.colors.primary,
         color: theme.colors.black,
+        border: "2px solid black",
       }}
       {...rest}
     >
