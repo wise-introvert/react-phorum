@@ -1,5 +1,18 @@
-import { ReactElement, FC } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { ReactElement, FC, useRef, MutableRefObject, MouseEvent } from "react";
 import {
+  List,
+  Avatar,
+  ListItem,
+  ListIcon,
+  Input,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
   ColorModeContextType,
   useColorMode,
   IconButton,
@@ -25,19 +38,31 @@ import {
   FiSun,
   FiMoon,
   FiChevronRight,
+  FiUser,
+  FiBell,
+  FiSearch,
 } from "react-icons/fi";
+import { FcHome, FcLineChart, FcBookmark, FcSearch } from "react-icons/fc";
 import { Link as ReactRouterLink } from "react-router-dom";
+import packageJSON from "../../../package.json";
 
 import { Button } from "..";
 
 export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
   const { isOpen, onToggle } = useDisclosure();
+  const {
+    isOpen: isDrawerOpen,
+    onClose: onDrawerClose,
+    onToggle: onDrawerToggle,
+    onOpen: onDrawerOpen,
+  } = useDisclosure();
   const theme = useTheme<Interfaces.Theme>();
   const { colorMode, toggleColorMode }: ColorModeContextType = useColorMode();
+  const drawerButtonRef: MutableRefObject<HTMLButtonElement> = useRef<any>();
 
   return (
     <Box
-      px={"4vw"}
+      px={"5vw"}
       w={"full"}
       borderBottom={`2px solid ${useColorModeValue(
         theme.colors.black,
@@ -45,82 +70,240 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
       )}`}
       pos={"sticky"}
       top={0}
-      zIndex={1021091902109}
+      zIndex={100}
       bg={useColorModeValue(theme.colors.white, theme.colors.darkgray)}
     >
-      <Flex
-        color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
-        align={"center"}
-      >
+      {true ? (
         <Flex
-          flex={{ base: 1, md: "auto" }}
-          ml={{ base: -2 }}
-          display={{ base: "flex", md: "none" }}
+          w={"full"}
+          color={useColorModeValue(theme.colors.lightgray, theme.colors.white)}
+          minH={"60px"}
+          dir={"row"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
         >
-          <IconButton
-            _active={{}}
-            _focus={{}}
-            _hover={{}}
-            variant={"ghost"}
-            onClick={onToggle}
-            icon={<Icon boxSize={6} as={isOpen ? FiXCircle : FiMenu} />}
-            aria-label={"Toggle Navigation"}
-          />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={["center", "left"]}
-            color={useColorModeValue("gray.800", "white")}
-            fontWeight={"black"}
+          <Flex
+            w={"fit-content"}
+            dir={"row"}
+            alignItems={"center"}
+            justifyContent={"flex-start"}
           >
-            SIF
-          </Text>
-
-          <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
+            <IconButton
+              onClick={onDrawerToggle}
+              ref={drawerButtonRef}
+              variant={"ghost"}
+              icon={<Icon as={FiMenu} boxSize={5} />}
+              aria-label={"menu"}
+            />
+            <Text
+              color={theme.colors.white}
+              bg={theme.colors.black}
+              fontWeight={"black"}
+              borderRadius={"5px"}
+              px={1}
+              as={ReactRouterLink}
+              to={`/`}
+              transition={"all 200ms ease-in-out"}
+              _hover={{
+                bg: theme.colors.white,
+                color: theme.colors.black,
+              }}
+              cursor={"pointer"}
+              border={`2px solid ${useColorModeValue(
+                theme.colors.black,
+                theme.colors.white
+              )}`}
+              fontSize={"md"}
+            >
+              SIF
+            </Text>
           </Flex>
-        </Flex>
+          <Flex
+            w={"fit-content"}
+            dir={"row"}
+            alignItems={"center"}
+            justifyContent={"flex-end"}
+          >
+            <IconButton
+              variant={"ghost"}
+              icon={<Icon as={FiSearch} boxSize={5} />}
+              aria-label={"search"}
+            />
+            <IconButton
+              mx={1}
+              variant={"ghost"}
+              icon={<Icon as={FiBell} boxSize={5} />}
+              aria-label={"notifications"}
+            />
+            <IconButton
+              mr={1}
+              onClick={toggleColorMode}
+              variant={"ghost"}
+              aria-label={"toggle-color-mode"}
+              icon={
+                <Icon boxSize={5} as={colorMode === "dark" ? FiSun : FiMoon} />
+              }
+            />
+            <IconButton
+              variant={"ghost"}
+              rounded={"full"}
+              icon={
+                <Avatar
+                  border={"2px solid black"}
+                  h={"28px"}
+                  maxW={"28px"}
+                  name={"Wise Introvert"} // TODO
+                  src={
+                    "https://res.cloudinary.com/practicaldev/image/fetch/s--YSFcx0Iy--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/471724/b962f9e9-a782-488b-a261-fa1ba529e44f.jpeg"
+                  } // TODO
+                  onClick={(e: MouseEvent<HTMLSpanElement>): void => {
+                    e.stopPropagation();
+                    alert("user");
+                  }}
+                />
+              }
+              aria-label={"profile"}
+            />
+          </Flex>
+          {/* TODO: it's own component and polish the UI a bit */}
+          <Drawer
+            isOpen={isDrawerOpen}
+            placement="left"
+            onClose={onDrawerClose}
+            finalFocusRef={drawerButtonRef}
+          >
+            <DrawerOverlay bg={"blackAlpha.200"} backdropFilter={"blur(8px)"} />
+            <DrawerContent
+              bg={useColorModeValue(theme.colors.white, theme.colors.black)}
+              h={"full"}
+              w="fit-content"
+              zIndex={10000000000}
+            >
+              <DrawerCloseButton size={"sm"} />
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={6}
+              <DrawerHeader w={"75%"} fontWeight={"black"} fontSize={"md"}>
+                Students International Forum
+              </DrawerHeader>
+
+              <DrawerBody>
+                <Stack spacing={3} p={0}>
+                  {[
+                    { title: "Home", icon: FcHome },
+                    { title: "Trending", icon: FcLineChart },
+                    { title: "Saved", icon: FcBookmark },
+                    { title: "Search", icon: FcSearch },
+                  ].map(
+                    (
+                      item: Record<string, any>
+                    ): ReactElement<HTMLLIElement> => (
+                      <Button
+                        px={2}
+                        bg={"transparent"}
+                        _hover={{
+                          bg: useColorModeValue(
+                            theme.colors.lightergray,
+                            theme.colors.darkgray
+                          ),
+                        }}
+                        w="full"
+                        border={"unset"}
+                        color={useColorModeValue(
+                          theme.colors.black,
+                          theme.colors.white
+                        )}
+                        alignItems={"center"}
+                        justifyContent={"flex-start"}
+                        variant={"ghost"}
+                        aria-label={item}
+                        leftIcon={<Icon boxSize={6} as={item.icon} />}
+                      >
+                        {item.title}
+                      </Button>
+                    )
+                  )}
+                </Stack>
+              </DrawerBody>
+
+              <DrawerFooter>
+                <Text fontSize={"2xs"} color={theme.colors.lightgray}>
+                  v{packageJSON.version}
+                </Text>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        </Flex>
+      ) : (
+        <Flex
+          color={useColorModeValue("gray.600", "white")}
+          minH={"60px"}
+          align={"center"}
         >
-          <IconButton
-            _active={{}}
-            _hover={{}}
-            _focus={{}}
-            variant="ghost"
-            aria-label={"toggle-color-mode"}
-            onClick={toggleColorMode}
-            fontSize={"sm"}
-            icon={<Icon as={colorMode == "dark" ? FiSun : FiMoon} />}
+          <Flex
+            flex={{ base: 1, md: "auto" }}
+            ml={{ base: -2 }}
+            display={{ base: "flex", md: "none" }}
           >
-            Sign In
-          </IconButton>
-          <Button
-            border={"2px solid black"}
-            fontSize={"sm"}
-            variant={"ghost"}
-            as={ReactRouterLink}
-            to={"#"}
+            <IconButton
+              _active={{}}
+              _focus={{}}
+              _hover={{}}
+              variant={"ghost"}
+              onClick={onToggle}
+              icon={<Icon boxSize={6} as={isOpen ? FiXCircle : FiMenu} />}
+              aria-label={"Toggle Navigation"}
+            />
+          </Flex>
+          <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+            <Text
+              textAlign={["center", "left"]}
+              color={useColorModeValue("gray.800", "white")}
+              fontWeight={"black"}
+            >
+              SIF
+            </Text>
+
+            <Flex display={{ base: "none", md: "flex" }} ml={10}>
+              <DesktopNav />
+            </Flex>
+          </Flex>
+
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
           >
-            Sign In
-          </Button>
-          <Button
-            border={"2px solid black"}
-            as={ReactRouterLink}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            to={"#"}
-            variant={"ghost"}
-          >
-            Sign Up
-          </Button>
-        </Stack>
-      </Flex>
+            <IconButton
+              onClick={toggleColorMode}
+              _hover={{}}
+              _active={{}}
+              _focus={{}}
+              variant={"ghost"}
+              aria-label={"toggle-color-mode"}
+              icon={<Icon as={colorMode === "dark" ? FiSun : FiMoon} />}
+            />
+            <Button
+              variant="ghost"
+              aria-label={"toggle-color-mode"}
+              onClick={toggleColorMode}
+              fontSize={"sm"}
+              icon={<Icon as={colorMode == "dark" ? FiSun : FiMoon} />}
+            >
+              Sign In
+            </Button>
+            <Button
+              border={"2px solid black"}
+              as={ReactRouterLink}
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              to={"#"}
+              variant={"ghost"}
+            >
+              Sign Up
+            </Button>
+          </Stack>
+        </Flex>
+      )}
 
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
@@ -298,3 +481,4 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "/path/not",
   },
 ];
+/* eslint-disable react-hooks/rules-of-hooks */
