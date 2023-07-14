@@ -60,10 +60,10 @@ const Wrapper = () => {
       h="full"
       p={0}
       m={0}
-      bg={useColorModeValue(theme.colors.lightgray, theme.colors.black)}
+      bg={useColorModeValue(theme.colors.lightergray, theme.colors.black)}
     >
       <Navbar />
-      <Box h={"full"} py={4} px={"10vw"}>
+      <Box h={"full"} py={4} px={"5vw"}>
         <Outlet />
       </Box>
     </Box>
