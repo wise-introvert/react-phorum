@@ -44,7 +44,7 @@ dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
-// TODO: isloate to it's own component
+// TODO: isloate to it's own component.
 const Wrapper = () => {
   const client: ApolloClient<{}> = new ApolloClient<{}>({
     uri:
