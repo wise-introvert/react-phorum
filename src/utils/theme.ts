@@ -13,10 +13,11 @@ export const theme = extendTheme({
   },
   colors: {
     primary: "#FFBE0B",
-    white: "#fafbfb",
+    white: "#ffffff", // "#fafbfb",
     black: "#010001",
     darkgray: "#171717",
     lightgray: "#667581",
+    lightergray: "#EBEBEB",
   },
   config,
 });
