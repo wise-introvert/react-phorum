@@ -30,6 +30,7 @@ import {
   useColorModeValue,
   useDisclosure,
   useTheme,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import {
   FiMenu,
@@ -59,6 +60,11 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
   const theme = useTheme<Interfaces.Theme>();
   const { colorMode, toggleColorMode }: ColorModeContextType = useColorMode();
   const drawerButtonRef: MutableRefObject<HTMLButtonElement> = useRef<any>();
+  const [isSmallerThan768] = useMediaQuery("(max-width: 768px)");
+  const textColor: string = useColorModeValue(
+    theme.colors.black,
+    theme.colors.white
+  );
 
   return (
     <Box
@@ -114,6 +120,7 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
               theme.colors.white
             )}`}
             fontSize={"md"}
+            fontFamily={"brand"}
           >
             SIF
           </Text>
@@ -181,7 +188,12 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
           >
             <DrawerCloseButton size={"sm"} />
 
-            <DrawerHeader w={"75%"} fontWeight={"black"} fontSize={"md"}>
+            <DrawerHeader
+              w={"75%"}
+              color={textColor}
+              fontWeight={"bold"}
+              fontSize={"lg"}
+            >
               Students International Forum
             </DrawerHeader>
 
