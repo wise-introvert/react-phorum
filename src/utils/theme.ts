@@ -5,11 +5,15 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
+const font: string = "Fira Code";
+const brand: string = "CaslonGraD";
+
 export const theme = extendTheme({
   fonts: {
-    heading: "Source Code Pro",
-    body: "Source Code Pro",
-    mono: "Source Code Pro",
+    brand,
+    heading: font,
+    body: font,
+    mono: font,
   },
   colors: {
     primary: "#FFBE0B",
