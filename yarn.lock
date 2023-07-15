@@ -2662,6 +2662,21 @@
   resolved "https://registry.yarnpkg.com/@fal-works/esbuild-plugin-global-externals/-/esbuild-plugin-global-externals-2.1.2.tgz#c05ed35ad82df8e6ac616c68b92c2282bd083ba4"
   integrity sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==
 
+"@fontsource/fira-code@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/fira-code/-/fira-code-5.0.5.tgz#528610f5666d74159541f45a7d11587e72fd3408"
+  integrity sha512-mb6eBaD0nheCaPZYllnBVsfUUuZufFtxZrF57CjmzkW2tM/G6Yag2UGjCX6vWVblHiIssmj986IDJo+R7SvnMw==
+
+"@fontsource/inconsolata@^latest":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/inconsolata/-/inconsolata-5.0.5.tgz#241067a6ab4e83fcbd1976408f02eacfa2a1a6d4"
+  integrity sha512-uU9t2j/hq4UweFXTjo+geLPFqhTucDdeei/a4BEHdtFPwJIfXLXmzlHeDrjOatHYGbRlJlydS4Ipr16A4O/e5A==
+
+"@fontsource/jetbrains-mono@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/jetbrains-mono/-/jetbrains-mono-5.0.5.tgz#415c46ba68b40a2f4200117430c99bc04a0ab460"
+  integrity sha512-Smuppiu7QzNCatnccTXdUYbxUmEVywklM/hntWKhig0Q+hm7SYzQpNpxCR1Gm8npE8jpaKslhIsBPGuTBGZgdA==
+
 "@fontsource/montserrat@^5.0.4":
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-5.0.4.tgz#52ad2b73bc91ba68b2106b1008a6fa438d96c72b"
@@ -2671,6 +2686,11 @@
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@fontsource/playfair-display/-/playfair-display-5.0.4.tgz#a5b615b40933579cde2d1e0d00ed8a33f13bf240"
   integrity sha512-J9SS0xRrc5LEs25gnUdWKL2rM5GkOcC6fG5yh9+pLtjsDWAaLskHEa9tehWCLu2gCthV6xcZ+Cls/K15C4dXvw==
+
+"@fontsource/source-code-pro@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/source-code-pro/-/source-code-pro-5.0.5.tgz#730475552a40ef74333b690b3ad4426196f7e406"
+  integrity sha512-S56efoSrojdh3F/3CsiiD+dqwjPhpQGlraCV6YSJEFuA0v8YlIGLEesP+Wmv88aYqRn4VgHIe9dtn1TrYkW4Qg==
 
 "@graphql-typed-document-node/core@^3.1.1":
   version "3.2.0"
