@@ -1,3 +1,12 @@
+import "@fontsource/montserrat";
+import "@fontsource/playfair-display";
+import "@fontsource/source-code-pro";
+import "@fontsource/inconsolata";
+import "@fontsource/fira-code";
+import "@fontsource/jetbrains-mono";
+import "./fonts/CaslonGraComD.ttf";
+import "./fonts/CaslonGraD.ttf";
+
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import {
