@@ -1,26 +1,24 @@
-import { FC, ReactElement, MouseEvent } from "react";
-import { useQuery } from "@apollo/client";
-import { VStack, Box, Text, Icon, Spinner, useTheme } from "@chakra-ui/react";
-import { get, isEmpty } from "lodash";
-import { BiErrorAlt } from "react-icons/bi";
-import { FiRefreshCw } from "react-icons/fi";
+import { FC, ReactElement, MouseEvent } from 'react';
+import { useQuery } from '@apollo/client';
+import { VStack, Box, Icon, Spinner } from '@chakra-ui/react';
+import { get } from 'lodash';
+import { FiRefreshCw } from 'react-icons/fi';
 
-import { GetFeedQuery } from "./graphql";
-import { PostCard } from "../post-summary";
-import { Button } from "../button";
+import { GetFeedQuery } from './graphql';
+import { PostCard } from '../post-summary';
+import { Button } from '../button';
 
-export const Feed: FC<{}> = (): ReactElement => {
+export const Feed: FC = (): ReactElement => {
   const { data, error, loading, refetch } = useQuery<{
     posts: Interfaces.Post[];
   }>(GetFeedQuery, {
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: "cache-first",
+    fetchPolicy: 'cache-first',
   });
-  const theme = useTheme();
 
   if (error || loading) {
     return (
-      <Box h={"full"} w={"full"} display={"grid"} placeItems={"center"}>
+      <Box h={'full'} w={'full'} display={'grid'} placeItems={'center'}>
         {error ? (
           <Button
             onClick={(e: MouseEvent<HTMLButtonElement>): void => {
@@ -29,9 +27,9 @@ export const Feed: FC<{}> = (): ReactElement => {
               refetch();
             }}
             leftIcon={<Icon as={FiRefreshCw} />}
-            size={"sm"}
-            border={"2px solid black"}
-            variant={"ghost"}
+            size={'sm'}
+            border={'2px solid black'}
+            variant={'ghost'}
           >
             retry
           </Button>
@@ -43,19 +41,19 @@ export const Feed: FC<{}> = (): ReactElement => {
   }
 
   return (
-    <Box h={"full"} w={"full"}>
+    <Box h={'full'} w={'full'}>
       <VStack py={3} spacing={2}>
-        {get(data, "posts", []).map(
+        {get(data, 'posts', []).map(
           (post: Interfaces.Post): ReactElement => (
             <PostCard
-              key={get(post, "_id")}
+              key={get(post, '_id')}
               loading={loading}
-              error={get(error, "message", undefined)}
+              error={get(error, 'message', undefined)}
               post={post}
               events={{} as any}
               temp={
                 {
-                  image: get(post, "image"),
+                  image: get(post, 'image'),
                 } as any
               }
             />
