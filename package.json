@@ -8,14 +8,15 @@
     "@chakra-ui/theme-tools": "^2.0.18",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/fira-code": "^5.0.5",
+    "@fontsource/inconsolata": "^latest",
+    "@fontsource/jetbrains-mono": "^5.0.5",
     "@fontsource/montserrat": "^5.0.4",
     "@fontsource/playfair-display": "^5.0.4",
-    "@fontsource/inconsolata": "^latest",
     "@fontsource/source-code-pro": "^5.0.5",
-    "@fontsource/jetbrains-mono": "^5.0.5",
-    "@fontsource/fira-code": "^5.0.5",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
     "dayjs": "^1.11.9",
-    "eslint": "8.44.0",
+    "eslint": "^8.45.0",
     "framer-motion": "^10.12.18",
     "graphql": "^16.7.1",
     "he": "^1.2.0",
@@ -40,6 +41,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@chakra-ui/storybook-addon": "^5.0.0",
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
     "@storybook/addon-essentials": "^7.0.26",
     "@storybook/addon-interactions": "^7.0.26",
     "@storybook/addon-links": "^7.0.26",
@@ -60,9 +63,15 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/react-syntax-highlighter": "^15.5.7",
+    "@typescript-eslint/parser": "^6.0.0",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-storybook": "^0.6.12",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "prettier": "^3.0.0",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.26",
@@ -76,7 +85,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "lint": "yarn run eslint . --fix --quiet",
+    "pretty": "yarn run prettier --write .",
+    "postinstall": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -95,5 +107,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "*.{css,less,scss,html,json,jsx,js,tsx,ts}": [
+      "prettier --write ."
+    ],
+    "*.{js,ts}": "eslint --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
