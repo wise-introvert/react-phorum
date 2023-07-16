@@ -9,10 +9,20 @@ import './fonts/CaslonGraD.ttf';
 
 import ReactDOM from 'react-dom/client';
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   ChakraProvider,
   Box,
-  useColorModeValue,
   ColorModeScript,
+  useDisclosure,
+  useTheme,
+  useColorModeValue,
+  Text,
 } from '@chakra-ui/react';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import dayjs from 'dayjs';
@@ -24,7 +34,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { theme } from './utils';
-import { Navbar, Feed } from './components';
+import { Navbar, Feed, Button } from './components';
 
 dayjs.extend(updateLocale);
 dayjs.updateLocale('en', {
@@ -58,6 +68,9 @@ const client: ApolloClient<unknown> = new ApolloClient<unknown>({
 
 // TODO: isloate to it's own component.
 const Wrapper = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const theme: Interfaces.Theme = useTheme<Interfaces.Theme>();
+
   return (
     <Box
       w={'full'}
@@ -67,6 +80,35 @@ const Wrapper = () => {
       bg={useColorModeValue(theme.colors.lightergray, theme.colors.black)}
     >
       <Navbar />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent
+          color={useColorModeValue(theme.colors.black, theme.colors.white)}
+          bg={useColorModeValue(theme.colors.white, theme.colors.darkgray)}
+        >
+          <ModalHeader>
+            Website under construction: testing in progress...
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Welcome to our work-in-progress website! Please note that the
+              content you see here is for testing purposes only. We are
+              currently in the process of constructing our website to provide
+              you with the best user experience. Stay tuned for our official
+              launch, where you'll find exciting features and valuable
+              information. Thank you for your patience and understanding during
+              this development phase!
+            </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr={3} onClick={onClose}>
+              I understand
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Box h={'full'} py={4} px={'5vw'}>
         <Outlet />
       </Box>
