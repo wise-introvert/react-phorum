@@ -108,6 +108,6 @@
     "*.{css,less,scss,html,json,jsx,js,tsx,ts}": [
       "prettier --write ."
     ],
-    "*.{js,ts}": "eslint --fix"
+    "*.{js,ts,jsx,tsx}": "eslint --fix"
   }
 }
