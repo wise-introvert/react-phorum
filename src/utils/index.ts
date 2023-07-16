@@ -1,2 +1,2 @@
-export * from "./theme";
-export * from "./format-number";
+export * from './theme';
+export * from './format-number';

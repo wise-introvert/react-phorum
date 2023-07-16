@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Feed } from ".";
-import { GetFeedQuery } from "./graphql";
-import { posts } from "../../utils/fake-data";
+import { Feed } from '.';
+import { GetFeedQuery } from './graphql';
+import { posts } from '../../utils/fake-data';
 
 const meta: Meta<typeof Feed> = {
-  title: "Feed",
+  title: 'Feed',
   component: Feed,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -65,7 +65,7 @@ export const ErrorState: Story = {
           request: {
             query: GetFeedQuery,
           },
-          error: new Error("Something went wrong."),
+          error: new Error('Something went wrong.'),
         },
       ],
     },

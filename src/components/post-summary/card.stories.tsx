@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { PostCard } from ".";
-import { posts } from "../../utils/fake-data";
+import { PostCard } from '.';
+import { posts } from '../../utils/fake-data';
 
 const meta: Meta<typeof PostCard> = {
-  title: "Post Card",
+  title: 'Post Card',
   component: PostCard,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -21,21 +21,21 @@ export const Default: Story = {
       votes: 1209098725,
       views: 2986509865,
       image:
-        "https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tfGVufDB8fDB8fHww&w=1000&q=80",
+        'https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tfGVufDB8fDB8fHww&w=1000&q=80',
     },
     events: {
       onMenuItemClick: (): void => {},
       onThreadClick: () => {
-        alert("thread clicked ");
+        alert('thread clicked ');
       },
       onPostClick: () => {
-        alert("post clicked ");
+        alert('post clicked ');
       },
       onForumClick: () => {
-        alert("forum clicked ");
+        alert('forum clicked ');
       },
       onUserClick: () => {
-        alert("user clicked ");
+        alert('user clicked ');
       },
     },
     post: data,
@@ -52,7 +52,7 @@ export const Loading: Story = {
 
 export const Error: Story = {
   args: {
-    error: "Something went wrong!",
+    error: 'Something went wrong!',
     ...Default.args,
   },
 };
@@ -92,9 +92,9 @@ export const IsNotGenisis: Story = {
       ...(Default.args!.post as any),
       genisis: false,
       thread: {
-        _id: "6as5df76a5s8f6a8s9d56",
+        _id: '6as5df76a5s8f6a8s9d56',
       },
-      title: "",
+      title: '',
     },
   },
 };
@@ -104,7 +104,7 @@ export const NoContent: Story = {
     ...Default.args,
     post: {
       ...(Default.args!.post as any),
-      content: "",
+      content: '',
     },
   },
 };

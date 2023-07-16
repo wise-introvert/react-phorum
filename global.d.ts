@@ -1,4 +1,4 @@
-declare module "*.css";
+declare module '*.css';
 
 /*
 declare namespace Interfaces {
@@ -57,13 +57,13 @@ declare namespace Interfaces {
 */
 
 declare global {
-  export const BULLET: string = "•";
+  export const BULLET: string = '•';
 }
 
 declare namespace Interfaces {
   export interface Theme {
     colors: Record<
-      "primary" | "black" | "white" | "darkgray" | "lightgray" | "lightergray",
+      'primary' | 'black' | 'white' | 'darkgray' | 'lightgray' | 'lightergray',
       string
     >;
   }

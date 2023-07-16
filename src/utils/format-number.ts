@@ -9,27 +9,27 @@
 export const formatNumber = (
   num?: number,
   decimals: number = 0,
-  units: string[] = ["", "k", "M", "B", "T"]
+  units: string[] = ['', 'k', 'M', 'B', 'T']
 ): string => {
   if (!num || Number.isNaN(num)) {
-    return "0"; // return "•";
+    return '0'; // return "•";
   }
 
   if (!Number.isFinite(num)) {
     throw new Error(
-      "Invalid input. The number must be a finite numeric value."
+      'Invalid input. The number must be a finite numeric value.'
     );
   }
 
   if (decimals < 0 || !Number.isInteger(decimals)) {
     throw new Error(
-      "Invalid input. The decimals parameter must be a non-negative integer."
+      'Invalid input. The decimals parameter must be a non-negative integer.'
     );
   }
 
   if (!Array.isArray(units) || units.length === 0) {
     throw new Error(
-      "Invalid input. The units parameter must be a non-empty array of strings."
+      'Invalid input. The units parameter must be a non-empty array of strings.'
     );
   }
 
