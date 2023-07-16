@@ -41,8 +41,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@chakra-ui/storybook-addon": "^5.0.0",
-    "@commitlint/cli": "^17.6.6",
-    "@commitlint/config-conventional": "^17.6.6",
     "@storybook/addon-essentials": "^7.0.27",
     "@storybook/addon-interactions": "^7.0.27",
     "@storybook/addon-links": "^7.0.27",
@@ -65,8 +63,6 @@
     "@types/react-syntax-highlighter": "^15.5.7",
     "@typescript-eslint/parser": "^6.0.0",
     "babel-plugin-named-exports-order": "^0.0.2",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^3.0.0",
@@ -113,10 +109,5 @@
       "prettier --write ."
     ],
     "*.{js,ts}": "eslint --fix"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
