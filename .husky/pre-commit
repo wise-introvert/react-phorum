@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn run lint-staged && git add . && git commit -m "chore: lint and prettier" --no-verify
+yarn run lint-staged
