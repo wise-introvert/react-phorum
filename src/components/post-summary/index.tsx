@@ -43,7 +43,7 @@ import rehypeRaw from 'rehype-raw';
 import emoji from 'remark-emoji';
 
 import { formatNumber } from '../../utils';
-import { Button } from '..';
+import { Button } from '../button';
 
 const BULLET: string = '•';
 

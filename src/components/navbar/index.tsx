@@ -38,7 +38,7 @@ import { FcHome, FcLineChart, FcBookmark, FcSearch } from 'react-icons/fc';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import packageJSON from '../../../package.json';
 
-import { Button } from '..';
+import { Button } from '../button';
 
 export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
   const { isOpen } = useDisclosure();

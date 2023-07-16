@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const posts: Interfaces.Post[] = [
   {
     _id: '645c577f3fa6361756338c28',
@@ -8003,3 +8004,4 @@ export const forums: Interfaces.Forum[] = [
     ],
   },
 ] as any;
+/* eslint-disable */
