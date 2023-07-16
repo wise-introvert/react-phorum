@@ -36,7 +36,7 @@ import {
 } from 'react-icons/fi';
 import { FcHome, FcLineChart, FcBookmark, FcSearch } from 'react-icons/fc';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import packageJSON from '../../../package.json';
+// import packageJSON from '../../../package.json';
 
 import { Button } from '../button';
 
@@ -226,7 +226,7 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
 
             <DrawerFooter>
               <Text fontSize={'2xs'} color={theme.colors.lightgray}>
-                v{packageJSON.version}
+                v1.0.1
               </Text>
             </DrawerFooter>
           </DrawerContent>
