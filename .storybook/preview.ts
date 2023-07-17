@@ -6,6 +6,14 @@ import updateLocale from "dayjs/plugin/updateLocale";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { MockedProvider } from "@apollo/client/testing";
 import "../src/index.css";
+import '@fontsource/montserrat';
+import '@fontsource/playfair-display';
+import '@fontsource/source-code-pro';
+import '@fontsource/inconsolata';
+import '@fontsource/fira-code';
+import '@fontsource/jetbrains-mono';
+import '../src/fonts/CaslonGraComD.ttf';
+import '../src/fonts/CaslonGraD.ttf';
 
 import { theme } from "../src/utils";
 
