@@ -84,6 +84,7 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
           justifyContent={'flex-start'}
         >
           <IconButton
+            colorScheme={useColorModeValue('blackAlpha', 'white')}
             onClick={onDrawerToggle}
             ref={drawerButtonRef}
             variant={'ghost'}
@@ -122,17 +123,20 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
           justifyContent={'flex-end'}
         >
           <IconButton
+            colorScheme={useColorModeValue('blackAlpha', 'white')}
             variant={'ghost'}
             icon={<Icon as={FiSearch} boxSize={5} />}
             aria-label={'search'}
           />
           <IconButton
+            colorScheme={useColorModeValue('blackAlpha', 'white')}
             mx={1}
             variant={'ghost'}
             icon={<Icon as={FiBell} boxSize={5} />}
             aria-label={'notifications'}
           />
           <IconButton
+            colorScheme={useColorModeValue('blackAlpha', 'white')}
             mr={1}
             onClick={toggleColorMode}
             variant={'ghost'}
@@ -160,6 +164,7 @@ export const Navbar: FC = (): ReactElement<HTMLDivElement> => {
               />
             }
             aria-label={'profile'}
+            colorScheme={useColorModeValue('blackAlpha', 'white')}
           />
         </Flex>
         {/* TODO: it's own component and polish the UI a bit */}

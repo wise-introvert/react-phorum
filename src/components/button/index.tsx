@@ -8,21 +8,5 @@ export const Button: FC<ButtonProps> = ({
 }: ButtonProps): ReactElement<HTMLButtonElement> => {
   const theme = useTheme<Interfaces.Theme>();
 
-  return (
-    <ChakraButton
-      fontWeight={'semibold'}
-      borderRadius={'5px'}
-      border={`2px solid ${theme.colors.primary}`}
-      color={theme.colors.primary}
-      // color={theme.colors.white}
-      _hover={{
-        bg: theme.colors.primary,
-        color: theme.colors.black,
-        border: '2px solid black',
-      }}
-      {...rest}
-    >
-      {children}
-    </ChakraButton>
-  );
+  return <ChakraButton {...rest}>{children}</ChakraButton>;
 };

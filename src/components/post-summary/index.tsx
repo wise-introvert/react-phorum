@@ -12,7 +12,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   Spinner,
   Box,
   Icon,
@@ -341,140 +340,59 @@ export const PostCard: FC<PostCardProps> = ({
                   e.stopPropagation();
                   setOpen((old: boolean): boolean => !old);
                 }}
-                aria-label={'options'}
-                variant={'ghost'}
-                _hover={{}}
-                _focus={{
-                  border: '2px solid black',
-                }}
-                _active={{
-                  border: '2px solid black',
-                }}
-                position={'absolute'}
-                right={4}
                 as={IconButton}
                 icon={<Icon as={BiDotsVerticalRounded} />}
+                aria-label={'options'}
+                variant={'ghost'}
+                colorScheme={useColorModeValue('black', 'white')}
+                position={'absolute'}
+                right={4}
                 top={2}
-                color={textColor}
                 bottom={0}
                 boxSize={[4, 5, 6]}
               />
               <MenuList
-                boxShadow={'0px 2px 4px rgba(0, 0, 0, 0.1)'}
-                border={'2px solid black'}
+                boxShadow={'0px 0px 4px rgba(0, 0, 0, 0.1)'}
+                border={`1px solid ${useColorModeValue(
+                  theme.colors.black,
+                  theme.colors.lightgray
+                )}`}
                 rounded={'md'}
                 fontSize={'sm'}
                 fontWeight={'semibold'}
-                p={0}
                 m={0}
+                p={1}
+                bg={useColorModeValue(
+                  theme.colors.white,
+                  theme.colors.darkgray
+                )}
               >
-                <MenuItem
-                  p={0}
-                  m={0}
-                  py={1}
-                  px={1}
-                  onClick={(e: MouseEvent<any>): void => {
-                    e.stopPropagation();
-                    setOpen(false);
-                    onMenuItemClick('edit');
-                  }}
-                >
-                  Edit
-                </MenuItem>
-                <MenuDivider p={0} m={0} bg={'black'} />
-                <MenuItem
-                  p={0}
-                  m={0}
-                  py={1}
-                  px={1}
-                  onClick={(e: MouseEvent<any>): void => {
-                    e.stopPropagation();
-                    setOpen(false);
-                    onMenuItemClick('delete');
-                  }}
-                >
-                  Delete
-                </MenuItem>
-                <MenuDivider p={0} m={0} bg={'black'} />
-                <MenuItem
-                  p={0}
-                  m={0}
-                  py={1}
-                  px={1}
-                  onClick={(e: MouseEvent<any>): void => {
-                    e.stopPropagation();
-                    setOpen(false);
-                    onMenuItemClick('share');
-                  }}
-                >
-                  Share
-                </MenuItem>
+                {['Edit', 'Delete', 'Share'].map(
+                  (item: string): ReactElement => (
+                    <MenuItem
+                      as={Button}
+                      bg={'transparent'}
+                      variant={'link'}
+                      onClick={(e: MouseEvent<any>): void => {
+                        e.stopPropagation();
+                        setOpen(false);
+                        onMenuItemClick('edit');
+                      }}
+                      size={['xs', 'sm', 'sm']}
+                    >
+                      <Text
+                        w="full"
+                        textAlign={'left'}
+                        fontWeight={'normal !important'}
+                      >
+                        {item}
+                      </Text>
+                    </MenuItem>
+                  )
+                )}
               </MenuList>
             </Menu>
           </Box>
-          {/*isEmpty(image) || !genisis ? (
-            <Box borderBottom={"2px solid black"} h={"full"} w={"full"}>
-              {isEmpty(get(post, "content")) ? (
-                <Box
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  flexDirection={"column"}
-                  h={"full"}
-                  w={"full"}
-                >
-                  <Icon as={BiErrorAlt} boxSize={10} color={"blackAlpha.500"} />
-                  <Text>Content unavailable!</Text>
-                </Box>
-              ) : (
-                <Box
-                  p={"2"}
-                  pb={4}
-                  textAlign={"left"}
-                  h={"full"}
-                  w={"full"}
-                  position={"relative"}
-                >
-                  <ReactMarkdown
-                    className={
-                      expand ? "react-markdown-full" : "react-markdown-short"
-                    }
-                    components={renderers}
-                    remarkPlugins={[remarkGfm, emoji]}
-                    rehypePlugins={[rehypeRaw]}
-                  >
-                    {he.decode(
-                      `${
-                        isEmpty(post!.title)
-                          ? ""
-                          : `### ${get(post, "title", "Dummy title")}\n`
-                      }${get(post, "content", "")}`
-                    )}
-                  </ReactMarkdown>
-                  {get(post, "content", "").length > 150 && (
-                    <Button
-                      width={"full"}
-                      display={"flex"}
-                      alignItems={"center"}
-                      justifyContent={"flex-end"}
-                      bg={"transparent"}
-                      size={"xs"}
-                      variant={"link"}
-                      textDecoration={"none"}
-                      mt={expand ? -1 : 2}
-                      onClick={(e: MouseEvent<HTMLButtonElement>): void => {
-                        e.stopPropagation();
-                        setExpand((old: boolean): boolean => !old);
-                      }}
-                    >
-                      {expand ? "^^^ hide" : "...read more"}
-                    </Button>
-                  )}
-                </Box>
-              )}
-            </Box>
-          ) : (
-          )*/}
           <Box
             h={'full'}
             w={'full'}
@@ -649,18 +567,20 @@ export const PostCard: FC<PostCardProps> = ({
                     </Box>
                   )}
                 </Text>
-                {showIcon && (
+                {showIcon && genisis && (
                   <IconButton
-                    border={'2px solid black'}
                     rounded={'full'}
-                    aria-label={'nothin'}
-                    bg={'whiteAlpha.200'}
-                    backdropFilter={'blur(2px)'}
+                    aria-label={'toggle-length'}
+                    bg={useColorModeValue(
+                      theme.colors.black,
+                      theme.colors.white
+                    )}
                     position={'absolute'}
                     bottom={3}
                     right={5}
-                    variant={'ghost'}
+                    variant={'solid'}
                     disabled={true}
+                    colorScheme={useColorModeValue('black', 'white')}
                     onClick={(e: MouseEvent<HTMLButtonElement>): void => {
                       e.stopPropagation();
                       setExpand((old: boolean): boolean => !old);
@@ -798,6 +718,10 @@ export const PostCard: FC<PostCardProps> = ({
                 rightIcon={<Icon as={BiArrowToRight} />}
                 fontWeight={'semibold'}
                 rounded={'none'}
+                _hover={{
+                  bg: theme.colors.primary,
+                  color: theme.colors.black,
+                }}
               >
                 view
               </Button>
