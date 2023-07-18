@@ -70,6 +70,7 @@
     "lint-staged": "^13.2.3",
     "prettier": "^3.0.0",
     "prop-types": "^15.8.1",
+    "standard-version": "^9.5.0",
     "storybook": "^7.1.0",
     "storybook-addon-apollo-client": "^5.0.0",
     "storybook-addon-react-router-v6": "^1.0.2",
@@ -84,7 +85,8 @@
     "build-storybook": "storybook build",
     "lint": "yarn run eslint . --fix --quiet",
     "pretty": "yarn run prettier --write .",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "release": "yarn run standard-version"
   },
   "eslintConfig": {
     "extends": [
