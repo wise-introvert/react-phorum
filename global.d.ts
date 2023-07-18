@@ -63,7 +63,15 @@ declare global {
 declare namespace Interfaces {
   export interface Theme {
     colors: Record<
-      'primary' | 'black' | 'white' | 'darkgray' | 'lightgray' | 'lightergray',
+      | 'brand'
+      | 'primary'
+      | 'primaryLight'
+      | 'primaryDark'
+      | 'black'
+      | 'white'
+      | 'darkgray'
+      | 'lightgray'
+      | 'lightergray',
       string
     >;
   }
